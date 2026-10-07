@@ -1,84 +1,628 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spids Manager</title>
+
 <style>
-:root{--bg:#f4f6f8;--card:#fff;--text:#17202a;--muted:#6b7280;--line:#e5e7eb;--primary:#111827;--accent:#2563eb;--good:#16803c;--danger:#c62828;--warn:#b77900}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh}.top{position:sticky;top:0;z-index:10;background:var(--primary);color:#fff;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;font-size:20px}.space{font-size:12px;opacity:.8}.layout{display:flex;max-width:1500px;margin:auto}.side{width:240px;background:#fff;border-right:1px solid var(--line);min-height:calc(100vh - 60px);padding:12px;position:sticky;top:60px;align-self:flex-start}.nav button{display:block;width:100%;text-align:left;background:none;padding:11px 12px;border-radius:10px;margin:3px 0;color:#374151}.nav button.active,.nav button:hover{background:#eef2ff;color:#1d4ed8;font-weight:700}.main{flex:1;padding:18px;min-width:0}.mobileNav{display:none;overflow:auto;background:#fff;border-bottom:1px solid var(--line);padding:8px}.mobileNav button{white-space:nowrap;background:#f3f4f6;border-radius:20px;padding:8px 12px;margin-right:5px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:0 1px 2px #00000008}.kpi b{display:block;font-size:24px;margin-top:5px}.muted{color:var(--muted);font-size:13px}.sectionHead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:5px 0 14px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{background:var(--primary);color:#fff;padding:9px 13px;border-radius:9px}.btn.secondary{background:#eef2f7;color:#111827}.btn.blue{background:var(--accent)}.btn.danger{background:#fee2e2;color:#991b1b}.btn.good{background:#dcfce7;color:#166534}.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}.field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:9px;background:#fff}.field.full{grid-column:1/-1}.tableWrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:650px}.table th,.table td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.pill{display:inline-block;padding:4px 8px;border-radius:20px;background:#eef2ff;color:#3730a3;font-size:11px}.empty{padding:30px;text-align:center;color:var(--muted)}.modal{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;justify-content:center;z-index:50}.modal.show{display:flex}.modalBox{background:#fff;width:min(760px,100%);max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:18px}.close{float:right;background:#f3f4f6;border-radius:50%;width:34px;height:34px}.bar{height:9px;background:#e5e7eb;border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;background:#2563eb}.photo{width:110px;height:90px;object-fit:cover;border-radius:8px}.notice{padding:10px 12px;border-radius:10px;background:#eff6ff;color:#1e40af;margin-bottom:12px}
-@media(max-width:800px){.side{display:none}.mobileNav{display:block}.main{padding:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.top{position:relative}.sectionHead{align-items:flex-start;flex-direction:column}.modalBox{max-height:95vh}}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f6f8;
+  color:#17202a;
+}
+header{
+  background:#111827;
+  color:white;
+  padding:20px;
+  text-align:center;
+}
+header h1{margin:0;font-size:28px}
+header p{margin:6px 0 0;color:#cbd5e1}
+
+.container{
+  padding:20px;
+  max-width:1200px;
+  margin:auto;
+}
+
+.dashboard{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.card{
+  background:white;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+.card h3{margin:0 0 10px}
+.card .number{
+  font-size:28px;
+  font-weight:bold;
+}
+
+.menu{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+}
+
+button{
+  border:0;
+  border-radius:12px;
+  padding:15px;
+  font-size:16px;
+  cursor:pointer;
+  background:#2563eb;
+  color:white;
+}
+
+button:hover{opacity:.9}
+
+.section{
+  background:white;
+  margin-top:20px;
+  padding:20px;
+  border-radius:14px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+input,select{
+  width:100%;
+  padding:12px;
+  margin:7px 0 12px;
+  border:1px solid #d1d5db;
+  border-radius:8px;
+  font-size:15px;
+}
+
+.hidden{display:none}
+
+.item{
+  padding:12px;
+  border-bottom:1px solid #eee;
+}
+
+.delete{
+  background:#dc2626;
+  padding:8px 12px;
+  font-size:13px;
+}
+
+@media(max-width:600px){
+  .container{padding:12px}
+  header h1{font-size:24px}
+}
 </style>
 </head>
-<body>
-<div class="app">
-<header class="top"><div><div class="brand">🏗️ Spids Manager</div><div class="space" id="spaceLabel">Espace Personnel</div></div><button class="btn secondary" onclick="openSpace()">Changer d’espace</button></header>
-<div class="mobileNav" id="mobileNav"></div>
-<div class="layout">
-<aside class="side"><div class="nav" id="sideNav"></div></aside>
-<main class="main" id="main"></main>
-</div>
-</div>
-<div class="modal" id="modal"><div class="modalBox"><button class="close" onclick="closeModal()">×</button><div id="modalBody"></div></div></div>
-<script>
-const KEY="spids_manager_v2";
-const menu=[
-["dashboard","📊 Dashboard"],["chantiers","🏗️ Chantiers"],["ouvriers","👷 Ouvriers"],["fournisseurs","🚚 Fournisseurs"],["materiaux","📦 Matériaux & Stock"],["finance","💰 Finance"],["factures","🧾 Factures"],["documents","📄 Documents"],["reunions","📅 Réunions"],["planning","🗓️ Planning"],["photos","📸 Photos"],["rapports","📈 Rapports"]
-];
-let db=JSON.parse(localStorage.getItem(KEY)||"null")||{
-space:"Personal",active:"dashboard",chantiers:[],ouvriers:[],fournisseurs:[],materiaux:[],
-finance:[],factures:[],documents:[],reunions:[],planning:[],photos:[]
-};
-function save(){localStorage.setItem(KEY,JSON.stringify(db))}
-function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
-function money(n){return (Number(n)||0).toLocaleString("fr-MA",{minimumFractionDigits:2,maximumFractionDigits:2})+" DH"}
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function nav(){
- let h=menu.map(x=>`<button class="${db.active===x[0]?'active':''}" onclick="go('${x[0]}')">${x[1]}</button>`).join("");
- document.getElementById("sideNav").innerHTML=h; document.getElementById("mobileNav").innerHTML=h.replaceAll("<button","<button");
- document.getElementById("spaceLabel").textContent="Espace "+db.space;
-}
-function go(x){db.active=x;save();render()}
-function render(){nav(); let f=views[db.active]||views.dashboard; document.getElementById("main").innerHTML=f(); if(db.active==="dashboard") drawDashboard()}
-function openModal(body){document.getElementById("modalBody").innerHTML=body;document.getElementById("modal").classList.add("show")}
-function closeModal(){document.getElementById("modal").classList.remove("show")}
-function openSpace(){openModal(`<h2>Choisir l’espace</h2><div class="actions">${["Personal","Clients","Agences / Associés"].map(s=>`<button class="btn ${db.space===s?'blue':''}" onclick="db.space='${s}';save();closeModal();render()">${s}</button>`).join("")}</div><p class="muted">Les données de cette version sont enregistrées localement dans le navigateur.</p>`)}
 
-function add(type,title,fields,after){
- openModal(`<h2>${title}</h2><form class="form" id="f">${fields.map(x=>`<div class="field ${x.full?'full':''}"><label>${x.l}</label>${x.t==="textarea"?`<textarea name="${x.n}" rows="4"></textarea>`:`<input type="${x.t||'text'}" name="${x.n}" ${x.req?'required':''} placeholder="${x.p||''}">`}</div>`).join("")}<div class="field full actions"><button class="btn blue">Enregistrer</button><button type="button" class="btn secondary" onclick="closeModal()">Annuler</button></div></form>`);
- document.getElementById("f").onsubmit=e=>{e.preventDefault();let o={id:id(),date:new Date().toISOString().slice(0,10)};new FormData(e.target).forEach((v,k)=>o[k]=v);db[type].push(o);save();closeModal();render();after&&after(o)}
+<body>
+
+<header>
+  <h1>Spids Manager</h1>
+  <p>Gestion complète des chantiers</p>
+</header>
+
+<div class="container">
+
+  <div class="dashboard">
+
+    <div class="card">
+      <h3>Chantiers</h3>
+      <div class="number" id="chantierCount">0</div>
+    </div>
+
+    <div class="card">
+      <h3>Ouvriers</h3>
+      <div class="number" id="workerCount">0</div>
+    </div>
+
+    <div class="card">
+      <h3>Dépenses</h3>
+      <div class="number" id="expenseTotal">0 DH</div>
+    </div>
+
+    <div class="card">
+      <h3>Recettes</h3>
+      <div class="number" id="incomeTotal">0 DH</div>
+    </div>
+
+  </div>
+
+  <div class="menu">
+
+    <button onclick="showSection('chantiers')">
+      🏗️ Chantiers
+    </button>
+
+    <button onclick="showSection('ouvriers')">
+      👷 Ouvriers
+    </button>
+
+    <button onclick="showSection('depenses')">
+      💰 Dépenses
+    </button>
+
+    <button onclick="showSection('recettes')">
+      💵 Recettes
+    </button>
+
+    <button onclick="showSection('factures')">
+      🧾 Factures
+    </button>
+
+    <button onclick="showSection('reunions')">
+      📅 Réunions
+    </button>
+
+    <button onclick="showSection('materiaux')">
+      🧱 Matériaux
+    </button>
+
+    <button onclick="showSection('personnel')">
+      👤 Personnel
+    </button>
+
+  </div>
+
+
+  <!-- CHANTIERS -->
+
+  <div id="chantiers" class="section hidden">
+
+    <h2>🏗️ Gestion des chantiers</h2>
+
+    <input id="chantierName" placeholder="Nom du chantier">
+
+    <input id="chantierClient" placeholder="Nom du client">
+
+    <input id="chantierVille" placeholder="Ville">
+
+    <button onclick="addChantier()">Ajouter le chantier</button>
+
+    <div id="chantierList"></div>
+
+  </div>
+
+
+  <!-- OUVRIERS -->
+
+  <div id="ouvriers" class="section hidden">
+
+    <h2>👷 Ouvriers</h2>
+
+    <input id="workerName" placeholder="Nom de l'ouvrier">
+
+    <input id="workerJob" placeholder="Métier">
+
+    <input id="workerSalary" type="number" placeholder="Salaire / jour">
+
+    <button onclick="addWorker()">Ajouter l'ouvrier</button>
+
+    <div id="workerList"></div>
+
+  </div>
+
+
+  <!-- DEPENSES -->
+
+  <div id="depenses" class="section hidden">
+
+    <h2>💰 Dépenses</h2>
+
+    <input id="expenseName" placeholder="Description">
+
+    <input id="expenseAmount" type="number" placeholder="Montant DH">
+
+    <button onclick="addExpense()">Ajouter la dépense</button>
+
+    <div id="expenseList"></div>
+
+  </div>
+
+
+  <!-- RECETTES -->
+
+  <div id="recettes" class="section hidden">
+
+    <h2>💵 Recettes</h2>
+
+    <input id="incomeName" placeholder="Description">
+
+    <input id="incomeAmount" type="number" placeholder="Montant DH">
+
+    <button onclick="addIncome()">Ajouter la recette</button>
+
+    <div id="incomeList"></div>
+
+  </div>
+
+
+  <!-- FACTURES -->
+
+  <div id="factures" class="section hidden">
+
+    <h2>🧾 Factures</h2>
+
+    <input id="invoiceName" placeholder="Client / fournisseur">
+
+    <input id="invoiceAmount" type="number" placeholder="Montant DH">
+
+    <button onclick="addInvoice()">Ajouter la facture</button>
+
+    <div id="invoiceList"></div>
+
+  </div>
+
+
+  <!-- REUNIONS -->
+
+  <div id="reunions" class="section hidden">
+
+    <h2>📅 Réunions</h2>
+
+    <input id="meetingName" placeholder="Objet de la réunion">
+
+    <input id="meetingDate" type="date">
+
+    <button onclick="addMeeting()">Ajouter la réunion</button>
+
+    <div id="meetingList"></div>
+
+  </div>
+
+
+  <!-- MATERIAUX -->
+
+  <div id="materiaux" class="section hidden">
+
+    <h2>🧱 Matériaux</h2>
+
+    <input id="materialName" placeholder="Nom du matériau">
+
+    <input id="materialQty" type="number" placeholder="Quantité">
+
+    <input id="materialPrice" type="number" placeholder="Prix DH">
+
+    <button onclick="addMaterial()">Ajouter le matériau</button>
+
+    <div id="materialList"></div>
+
+  </div>
+
+
+  <!-- PERSONNEL -->
+
+  <div id="personnel" class="section hidden">
+
+    <h2>👤 Personnel</h2>
+
+    <p>
+      Espace de gestion du personnel et des intervenants.
+    </p>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let chantiers =
+JSON.parse(localStorage.getItem("chantiers") || "[]");
+
+let workers =
+JSON.parse(localStorage.getItem("workers") || "[]");
+
+let expenses =
+JSON.parse(localStorage.getItem("expenses") || "[]");
+
+let incomes =
+JSON.parse(localStorage.getItem("incomes") || "[]");
+
+let invoices =
+JSON.parse(localStorage.getItem("invoices") || "[]");
+
+let meetings =
+JSON.parse(localStorage.getItem("meetings") || "[]");
+
+let materials =
+JSON.parse(localStorage.getItem("materials") || "[]");
+
+
+function save(){
+
+localStorage.setItem("chantiers",JSON.stringify(chantiers));
+localStorage.setItem("workers",JSON.stringify(workers));
+localStorage.setItem("expenses",JSON.stringify(expenses));
+localStorage.setItem("incomes",JSON.stringify(incomes));
+localStorage.setItem("invoices",JSON.stringify(invoices));
+localStorage.setItem("meetings",JSON.stringify(meetings));
+localStorage.setItem("materials",JSON.stringify(materials));
+
+updateDashboard();
+
 }
-function del(type,i){if(confirm("Supprimer cet élément ?")){db[type].splice(i,1);save();render()}}
-function chantierSelect(){return db.chantiers.length?`<select name="chantier">${db.chantiers.map(c=>`<option value="${esc(c.id)}">${esc(c.nom)}</option>`).join("")}</select>`:`<input name="chantier" placeholder="Nom du chantier">`}
-const views={
-dashboard:()=>`<div class="sectionHead"><div><h1>Dashboard</h1><div class="muted">Vue générale de Spids Manager</div></div><div class="actions"><button class="btn blue" onclick="addChantier()">+ Nouveau chantier</button><button class="btn secondary" onclick="exportData()">Exporter</button></div></div>
-<div class="grid">
-<div class="card kpi">Chantiers<b>${db.chantiers.length}</b></div><div class="card kpi">Ouvriers<b>${db.ouvriers.length}</b></div><div class="card kpi">Dépenses<b>${money(db.finance.filter(x=>x.type==='depense').reduce((a,x)=>a+Number(x.montant),0))}</b></div><div class="card kpi">Encaissements<b>${money(db.finance.filter(x=>x.type==='recette').reduce((a,x)=>a+Number(x.montant),0))}</b></div>
-</div><br><div class="grid"><div class="card" style="grid-column:span 2"><h3>Situation financière</h3><div id="dashFinance"></div></div><div class="card" style="grid-column:span 2"><h3>Chantiers</h3>${db.chantiers.length?db.chantiers.slice(0,6).map(c=>`<p><b>${esc(c.nom)}</b> <span class="pill">${esc(c.statut||"En cours")}</span><br><span class="muted">${esc(c.client||"")} — ${esc(c.ville||"")}</span></p>`).join(""):`<div class="empty">Aucun chantier. Commence par créer le premier.</div>`}</div></div>`,
-chantiers:()=>listView("Chantiers","db.chantiers",`<button class="btn blue" onclick="addChantier()">+ Nouveau chantier</button>`,db.chantiers,["Nom","Client","Ville","Budget","Avancement","Statut"],c=>[c.nom,c.client,c.ville,money(c.budget),`${c.avancement||0}%`,c.statut||"En cours"],"chantiers"),
-ouvriers:()=>listView("Ouvriers","db.ouvriers",`<button class="btn blue" onclick="add('ouvriers','Ajouter un ouvrier',[{n:'nom',l:'Nom complet',req:true},{n:'chantier',l:'Chantier'},{n:'poste',l:'Poste'},{n:'taux',l:'Taux journalier',t:'number'},{n:'transport',l:'Transport',t:'number'},{n:'telephone',l:'Téléphone'}])">+ Ouvrier</button>`,db.ouvriers,["Nom","Chantier","Poste","Taux","Transport"],x=>[x.nom,x.chantier,x.poste,money(x.taux),money(x.transport)],"ouvriers"),
-fournisseurs:()=>listView("Fournisseurs","db.fournisseurs",`<button class="btn blue" onclick="add('fournisseurs','Ajouter un fournisseur',[{n:'nom',l:'Entreprise / Nom',req:true},{n:'contact',l:'Contact'},{n:'telephone',l:'Téléphone'},{n:'email',l:'Email'},{n:'specialite',l:'Spécialité'}])">+ Fournisseur</button>`,db.fournisseurs,["Nom","Contact","Téléphone","Spécialité"],x=>[x.nom,x.contact,x.telephone,x.specialite],"fournisseurs"),
-materiaux:()=>listView("Matériaux & Stock","db.materiaux",`<button class="btn blue" onclick="add('materiaux','Ajouter un matériau',[{n:'nom',l:'Désignation',req:true},{n:'chantier',l:'Chantier'},{n:'unite',l:'Unité'},{n:'quantite',l:'Quantité',t:'number'},{n:'prix',l:'Prix unitaire',t:'number'},{n:'seuil',l:'Seuil alerte',t:'number'}])">+ Matériau</button>`,db.materiaux,["Matériau","Chantier","Unité","Quantité","PU"],x=>[x.nom,x.chantier,x.unite,x.quantite,money(x.prix)],"materiaux"),
-finance:()=>`<div class="sectionHead"><div><h1>Finance</h1><div class="muted">Recettes, dépenses, avances et solde</div></div><div class="actions"><button class="btn good" onclick="addFinance('recette')">+ Recette</button><button class="btn danger" onclick="addFinance('depense')">+ Dépense</button></div></div>
-<div class="grid"><div class="card kpi">Recettes<b>${money(db.finance.filter(x=>x.type==='recette').reduce((a,x)=>a+Number(x.montant),0))}</b></div><div class="card kpi">Dépenses<b>${money(db.finance.filter(x=>x.type==='depense').reduce((a,x)=>a+Number(x.montant),0))}</b></div><div class="card kpi">Solde<b>${money(db.finance.reduce((a,x)=>a+(x.type==='recette'?1:-1)*Number(x.montant),0))}</b></div></div><br>${table(db.finance,["Date","Type","Libellé","Chantier","Montant"],x=>[x.date,x.type,x.libelle,x.chantier,money(x.montant)],"finance")}`,
-factures:()=>listView("Factures","db.factures",`<button class="btn blue" onclick="add('factures','Nouvelle facture',[{n:'numero',l:'N° facture',req:true},{n:'client',l:'Client'},{n:'chantier',l:'Chantier'},{n:'date',l:'Date',t:'date'},{n:'montant',l:'Montant HT',t:'number'},{n:'tva',l:'TVA %',t:'number'},{n:'statut',l:'Statut'}])">+ Facture</button>`,db.factures,["N°","Client","Chantier","Date","Montant HT","Statut"],x=>[x.numero,x.client,x.chantier,x.date,money(x.montant),x.statut||"Non payée"],"factures"),
-documents:()=>listView("Documents","db.documents",`<button class="btn blue" onclick="add('documents','Ajouter un document',[{n:'nom',l:'Nom du document',req:true},{n:'chantier',l:'Chantier'},{n:'categorie',l:'Catégorie'},{n:'note',l:'Note',t:'textarea'}])">+ Document</button>`,db.documents,["Document","Chantier","Catégorie","Note"],x=>[x.nom,x.chantier,x.categorie,x.note],"documents"),
-reunions:()=>listView("Réunions","db.reunions",`<button class="btn blue" onclick="add('reunions','Nouvelle réunion',[{n:'date',l:'Date',t:'date',req:true},{n:'heure',l:'Heure',t:'time'},{n:'chantier',l:'Chantier'},{n:'participants',l:'Participants'},{n:'objet',l:'Objet',full:true},{n:'compteRendu',l:'Compte rendu',t:'textarea',full:true}])">+ Réunion</button>`,db.reunions,["Date","Heure","Chantier","Objet"],x=>[x.date,x.heure,x.chantier,x.objet],"reunions"),
-planning:()=>listView("Planning","db.planning",`<button class="btn blue" onclick="add('planning','Nouvelle tâche',[{n:'tache',l:'Tâche',req:true},{n:'chantier',l:'Chantier'},{n:'debut',l:'Début',t:'date'},{n:'fin',l:'Fin',t:'date'},{n:'responsable',l:'Responsable'},{n:'statut',l:'Statut'}])">+ Tâche</button>`,db.planning,["Tâche","Chantier","Début","Fin","Responsable","Statut"],x=>[x.tache,x.chantier,x.debut,x.fin,x.responsable,x.statut||"À faire"],"planning"),
-photos:()=>`<div class="sectionHead"><div><h1>Photos / Caméra</h1><div class="muted">Photos classées par chantier</div></div><button class="btn blue" onclick="photoInput.click()">📸 Ajouter une photo</button></div><input id="photoInput" type="file" accept="image/*" capture="environment" style="display:none" onchange="addPhoto(this)"><div class="grid">${db.photos.length?db.photos.map((p,i)=>`<div class="card"><img class="photo" src="${p.data}"><p><b>${esc(p.nom)}</b></p><span class="muted">${esc(p.chantier||"")}</span><button class="btn danger" style="margin-top:8px" onclick="del('photos',${i})">Supprimer</button></div>`).join(""):`<div class="card empty" style="grid-column:1/-1">Aucune photo.</div>`}</div>`,
-rapports:()=>`<div class="sectionHead"><div><h1>Rapports</h1><div class="muted">Synthèse de l'activité</div></div><button class="btn blue" onclick="window.print()">🖨️ Imprimer / PDF</button></div><div class="grid"><div class="card"><h3>Chantiers</h3><b>${db.chantiers.length}</b></div><div class="card"><h3>Ouvriers</h3><b>${db.ouvriers.length}</b></div><div class="card"><h3>Fournisseurs</h3><b>${db.fournisseurs.length}</b></div><div class="card"><h3>Factures</h3><b>${db.factures.length}</b></div></div><br><div class="card"><h3>Résumé financier</h3>${financeSummary()}</div>`
-};
-function listView(title,ref,action,data,heads,row,type){return `<div class="sectionHead"><div><h1>${title}</h1><div class="muted">${data.length} élément(s)</div></div><div class="actions">${action}</div></div><div class="card">${data.length?table(data,heads,row,type):`<div class="empty">Aucun élément enregistré.</div>`}</div>`}
-function table(data,heads,row,type){return `<div class="tableWrap"><table class="table"><thead><tr>${heads.map(h=>`<th>${h}</th>`).join("")}<th></th></tr></thead><tbody>${data.map((x,i)=>`<tr>${row(x).map(v=>`<td>${esc(v)}</td>`).join("")}<td><button class="btn danger" onclick="del('${type}',${i})">×</button></td></tr>`).join("")}</tbody></table></div>`}
-function financeSummary(){let r=db.finance.filter(x=>x.type==="recette").reduce((a,x)=>a+Number(x.montant),0),d=db.finance.filter(x=>x.type==="depense").reduce((a,x)=>a+Number(x.montant),0);return `<p>Recettes: <b>${money(r)}</b></p><p>Dépenses: <b>${money(d)}</b></p><p>Solde: <b>${money(r-d)}</b></p><div class="bar"><i style="width:${r?Math.min(100,d/r*100):0}%"></i></div>`}
-function drawDashboard(){let e=document.getElementById("dashFinance");if(e)e.innerHTML=financeSummary()}
-function addChantier(){add("chantiers","Nouveau chantier",[{n:"nom",l:"Nom du chantier",req:true},{n:"client",l:"Client"},{n:"ville",l:"Ville"},{n:"adresse",l:"Adresse",full:true},{n:"budget",l:"Budget",t:"number"},{n:"avancement",l:"Avancement %",t:"number"},{n:"statut",l:"Statut"},{n:"dateDebut",l:"Date début",t:"date"},{n:"dateFin",l:"Date prévue fin",t:"date"}])}
-function addFinance(type){add("finance",type==="recette"?"Ajouter une recette":"Ajouter une dépense",[{n:"libelle",l:"Libellé",req:true},{n:"chantier",l:"Chantier"},{n:"montant",l:"Montant",t:"number",req:true},{n:"mode",l:"Mode de paiement"},{n:"date",l:"Date",t:"date",req:true},{n:"note",l:"Note",t:"textarea",full:true}],o=>o.type=type); db.finance[db.finance.length-1].type=type;save()}
-function addPhoto(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{db.photos.push({id:id(),date:new Date().toISOString().slice(0,10),nom:f.name,chantier:"",data:r.result});save();render()};r.readAsDataURL(f)}
-function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Spids_Manager_backup.json";a.click()}
+
+
+function showSection(id){
+
+document.querySelectorAll(".section")
+.forEach(x=>x.classList.add("hidden"));
+
+document.getElementById(id)
+.classList.remove("hidden");
+
+}
+
+
+function addChantier(){
+
+let name=document.getElementById("chantierName").value;
+let client=document.getElementById("chantierClient").value;
+let ville=document.getElementById("chantierVille").value;
+
+if(!name)return;
+
+chantiers.push({
+name:name,
+client:client,
+ville:ville
+});
+
+save();
 render();
+
+document.getElementById("chantierName").value="";
+document.getElementById("chantierClient").value="";
+document.getElementById("chantierVille").value="";
+
+}
+
+
+function addWorker(){
+
+let name=document.getElementById("workerName").value;
+let job=document.getElementById("workerJob").value;
+let salary=document.getElementById("workerSalary").value;
+
+if(!name)return;
+
+workers.push({
+name:name,
+job:job,
+salary:Number(salary)
+});
+
+save();
+render();
+
+}
+
+
+function addExpense(){
+
+let name=document.getElementById("expenseName").value;
+let amount=document.getElementById("expenseAmount").value;
+
+if(!name)return;
+
+expenses.push({
+name:name,
+amount:Number(amount)
+});
+
+save();
+render();
+
+}
+
+
+function addIncome(){
+
+let name=document.getElementById("incomeName").value;
+let amount=document.getElementById("incomeAmount").value;
+
+if(!name)return;
+
+incomes.push({
+name:name,
+amount:Number(amount)
+});
+
+save();
+render();
+
+}
+
+
+function addInvoice(){
+
+let name=document.getElementById("invoiceName").value;
+let amount=document.getElementById("invoiceAmount").value;
+
+if(!name)return;
+
+invoices.push({
+name:name,
+amount:Number(amount)
+});
+
+save();
+render();
+
+}
+
+
+function addMeeting(){
+
+let name=document.getElementById("meetingName").value;
+let date=document.getElementById("meetingDate").value;
+
+if(!name)return;
+
+meetings.push({
+name:name,
+date:date
+});
+
+save();
+render();
+
+}
+
+
+function addMaterial(){
+
+let name=document.getElementById("materialName").value;
+let qty=document.getElementById("materialQty").value;
+let price=document.getElementById("materialPrice").value;
+
+if(!name)return;
+
+materials.push({
+name:name,
+qty:Number(qty),
+price:Number(price)
+});
+
+save();
+render();
+
+}
+
+
+function removeItem(type,index){
+
+if(type==="chantier")chantiers.splice(index,1);
+if(type==="worker")workers.splice(index,1);
+if(type==="expense")expenses.splice(index,1);
+if(type==="income")incomes.splice(index,1);
+if(type==="invoice")invoices.splice(index,1);
+if(type==="meeting")meetings.splice(index,1);
+if(type==="material")materials.splice(index,1);
+
+save();
+render();
+
+}
+
+
+function render(){
+
+document.getElementById("chantierList").innerHTML =
+chantiers.map((x,i)=>
+`<div class="item">
+<b>${x.name}</b><br>
+Client: ${x.client}<br>
+Ville: ${x.ville}
+<br><button class="delete"
+onclick="removeItem('chantier',${i})">
+Supprimer
+</button>
+</div>`).join("");
+
+
+document.getElementById("workerList").innerHTML =
+workers.map((x,i)=>
+`<div class="item">
+<b>${x.name}</b> - ${x.job}<br>
+${x.salary} DH / jour
+<br><button class="delete"
+onclick="removeItem('worker',${i})">
+Supprimer
+</button>
+</div>`).join("");
+
+
+document.getElementById("expenseList").innerHTML =
+expenses.map((x,i)=>
+`<div class="item">
+${x.name} — <b>${x.amount} DH</b>
+<br><button class="delete"
+onclick="removeItem('expense',${i})">
+Supprimer
+</button>
+</div>`).join("");
+
+
+document.getElementById("incomeList").innerHTML =
+incomes.map((x,i)=>
+`<div class="item">
+${x.name} — <b>${x.amount} DH</b>
+<br><button class="delete"
+onclick="removeItem('income',${i})">
+Supprimer
+</button>
+</div>`).join("");
+
+
+document.getElementById("invoiceList").innerHTML =
+invoices.map((x,i)=>
+`<div class="item">
+${x.name} — <b>${x.amount} DH</b>
+<br><button class="delete"
+onclick="removeItem('invoice',${i})">
+Supprimer
+</button>
+</div>`).join("");
+
+
+document.getElementById("meetingList").innerHTML =
+meetings.map((x,i)=>
+`<div class="item">
+${x.name} — ${x.date}
+<br><button class="delete"
+onclick="removeItem('meeting',${i})">
+Supprimer
+</button>
+</div>`).join("");
+
+
+document.getElementById("materialList").innerHTML =
+materials.map((x,i)=>
+`<div class="item">
+${x.name} — ${x.qty} × ${x.price} DH
+<br><button class="delete"
+onclick="removeItem('material',${i})">
+Supprimer
+</button>
+</div>`).join("");
+
+}
+
+
+function updateDashboard(){
+
+document.getElementById("chantierCount")
+.innerText=chantiers.length;
+
+document.getElementById("workerCount")
+.innerText=workers.length;
+
+let exp=expenses.reduce((a,b)=>a+b.amount,0);
+
+let inc=incomes.reduce((a,b)=>a+b.amount,0);
+
+document.getElementById("expenseTotal")
+.innerText=exp.toLocaleString()+" DH";
+
+document.getElementById("incomeTotal")
+.innerText=inc.toLocaleString()+" DH";
+
+}
+
+
+render();
+updateDashboard();
+
 </script>
+
 </body>
 </html>
