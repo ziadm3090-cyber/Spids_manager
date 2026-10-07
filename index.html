@@ -2,102 +2,48 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
 <title>Spids Manager</title>
 
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f4f6f8;
-  color:#17202a;
-}
-header{
-  background:#111827;
-  color:white;
-  padding:20px;
-  text-align:center;
-}
-header h1{margin:0;font-size:28px}
-header p{margin:6px 0 0;color:#cbd5e1}
-
-.container{
-  padding:20px;
-  max-width:1200px;
-  margin:auto;
-}
-
-.dashboard{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:15px;
-  margin-bottom:25px;
-}
-
-.card{
-  background:white;
-  border-radius:14px;
-  padding:20px;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-.card h3{margin:0 0 10px}
-.card .number{
-  font-size:28px;
-  font-weight:bold;
-}
-
-.menu{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
-}
-
-button{
-  border:0;
-  border-radius:12px;
-  padding:15px;
-  font-size:16px;
-  cursor:pointer;
-  background:#2563eb;
-  color:white;
-}
-
-button:hover{opacity:.9}
-
-.section{
-  background:white;
-  margin-top:20px;
-  padding:20px;
-  border-radius:14px;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-input,select{
-  width:100%;
-  padding:12px;
-  margin:7px 0 12px;
-  border:1px solid #d1d5db;
-  border-radius:8px;
-  font-size:15px;
-}
-
-.hidden{display:none}
-
-.item{
-  padding:12px;
-  border-bottom:1px solid #eee;
-}
-
-.delete{
-  background:#dc2626;
-  padding:8px 12px;
-  font-size:13px;
-}
-
-@media(max-width:600px){
-  .container{padding:12px}
-  header h1{font-size:24px}
+body{margin:0;background:#f3f4f6;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+header{background:#111827;color:white;padding:15px;position:sticky;top:0;z-index:20}
+header h1{margin:0;font-size:21px}
+header small{color:#cbd5e1}
+main{padding:14px;padding-bottom:90px;max-width:1200px;margin:auto}
+button{border:0;border-radius:10px;padding:10px 14px;font-weight:bold;background:#e5e7eb;color:#111827}
+button.green{background:#198754;color:white}
+button.red{background:#fee2e2;color:#991b1b}
+button.blue{background:#2563eb;color:white}
+nav{display:flex;gap:7px;overflow:auto;padding:8px 0 12px;position:sticky;top:64px;background:#f3f4f6;z-index:10}
+nav button{white-space:nowrap}
+nav button.active{background:#111827;color:white}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:white;border:1px solid #e5e7eb;border-radius:15px;padding:15px;margin-bottom:12px;box-shadow:0 3px 15px #00000008}
+.stat b{font-size:24px;display:block;margin-top:8px}
+.muted{color:#6b7280}
+input,select,textarea{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:9px;background:white}
+label{font-size:13px;font-weight:bold;display:block;margin-bottom:10px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.full{grid-column:1/-1}
+.table{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:9px;border-bottom:1px solid #e5e7eb;text-align:left;white-space:nowrap}
+th{background:#f9fafb}
+.project{background:white;border:1px solid #ddd;border-radius:14px;padding:14px;margin-bottom:10px}
+.project h3{margin:0 0 5px}
+.modal{position:fixed;inset:0;background:#0008;z-index:100;padding:15px;overflow:auto}
+.modalbox{background:white;border-radius:16px;padding:16px;max-width:700px;margin:30px auto}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:8px;z-index:30}
+.bottom button{background:white;font-size:11px;padding:5px}
+.bottom span{display:block;font-size:20px}
+img{max-width:100%;border-radius:10px}
+@media(max-width:700px){
+.grid{grid-template-columns:1fr 1fr}
+.two,.form{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -105,524 +51,869 @@ input,select{
 <body>
 
 <header>
-  <h1>Spids Manager</h1>
-  <p>Gestion complète des chantiers</p>
+<h1>🏗️ Spids Manager</h1>
+<small id="subtitle">Gestion complète des chantiers</small>
 </header>
 
-<div class="container">
-
-  <div class="dashboard">
-
-    <div class="card">
-      <h3>Chantiers</h3>
-      <div class="number" id="chantierCount">0</div>
-    </div>
-
-    <div class="card">
-      <h3>Ouvriers</h3>
-      <div class="number" id="workerCount">0</div>
-    </div>
-
-    <div class="card">
-      <h3>Dépenses</h3>
-      <div class="number" id="expenseTotal">0 DH</div>
-    </div>
-
-    <div class="card">
-      <h3>Recettes</h3>
-      <div class="number" id="incomeTotal">0 DH</div>
-    </div>
-
-  </div>
-
-  <div class="menu">
-
-    <button onclick="showSection('chantiers')">
-      🏗️ Chantiers
-    </button>
-
-    <button onclick="showSection('ouvriers')">
-      👷 Ouvriers
-    </button>
-
-    <button onclick="showSection('depenses')">
-      💰 Dépenses
-    </button>
-
-    <button onclick="showSection('recettes')">
-      💵 Recettes
-    </button>
-
-    <button onclick="showSection('factures')">
-      🧾 Factures
-    </button>
-
-    <button onclick="showSection('reunions')">
-      📅 Réunions
-    </button>
-
-    <button onclick="showSection('materiaux')">
-      🧱 Matériaux
-    </button>
-
-    <button onclick="showSection('personnel')">
-      👤 Personnel
-    </button>
-
-  </div>
-
-
-  <!-- CHANTIERS -->
-
-  <div id="chantiers" class="section hidden">
-
-    <h2>🏗️ Gestion des chantiers</h2>
-
-    <input id="chantierName" placeholder="Nom du chantier">
-
-    <input id="chantierClient" placeholder="Nom du client">
-
-    <input id="chantierVille" placeholder="Ville">
-
-    <button onclick="addChantier()">Ajouter le chantier</button>
-
-    <div id="chantierList"></div>
-
-  </div>
-
-
-  <!-- OUVRIERS -->
-
-  <div id="ouvriers" class="section hidden">
-
-    <h2>👷 Ouvriers</h2>
-
-    <input id="workerName" placeholder="Nom de l'ouvrier">
-
-    <input id="workerJob" placeholder="Métier">
-
-    <input id="workerSalary" type="number" placeholder="Salaire / jour">
-
-    <button onclick="addWorker()">Ajouter l'ouvrier</button>
-
-    <div id="workerList"></div>
-
-  </div>
-
-
-  <!-- DEPENSES -->
-
-  <div id="depenses" class="section hidden">
-
-    <h2>💰 Dépenses</h2>
-
-    <input id="expenseName" placeholder="Description">
-
-    <input id="expenseAmount" type="number" placeholder="Montant DH">
-
-    <button onclick="addExpense()">Ajouter la dépense</button>
-
-    <div id="expenseList"></div>
-
-  </div>
-
-
-  <!-- RECETTES -->
-
-  <div id="recettes" class="section hidden">
-
-    <h2>💵 Recettes</h2>
-
-    <input id="incomeName" placeholder="Description">
-
-    <input id="incomeAmount" type="number" placeholder="Montant DH">
-
-    <button onclick="addIncome()">Ajouter la recette</button>
-
-    <div id="incomeList"></div>
-
-  </div>
-
-
-  <!-- FACTURES -->
-
-  <div id="factures" class="section hidden">
-
-    <h2>🧾 Factures</h2>
-
-    <input id="invoiceName" placeholder="Client / fournisseur">
-
-    <input id="invoiceAmount" type="number" placeholder="Montant DH">
-
-    <button onclick="addInvoice()">Ajouter la facture</button>
-
-    <div id="invoiceList"></div>
-
-  </div>
-
-
-  <!-- REUNIONS -->
-
-  <div id="reunions" class="section hidden">
-
-    <h2>📅 Réunions</h2>
-
-    <input id="meetingName" placeholder="Objet de la réunion">
-
-    <input id="meetingDate" type="date">
-
-    <button onclick="addMeeting()">Ajouter la réunion</button>
-
-    <div id="meetingList"></div>
-
-  </div>
-
-
-  <!-- MATERIAUX -->
-
-  <div id="materiaux" class="section hidden">
-
-    <h2>🧱 Matériaux</h2>
-
-    <input id="materialName" placeholder="Nom du matériau">
-
-    <input id="materialQty" type="number" placeholder="Quantité">
-
-    <input id="materialPrice" type="number" placeholder="Prix DH">
-
-    <button onclick="addMaterial()">Ajouter le matériau</button>
-
-    <div id="materialList"></div>
-
-  </div>
-
-
-  <!-- PERSONNEL -->
-
-  <div id="personnel" class="section hidden">
-
-    <h2>👤 Personnel</h2>
-
-    <p>
-      Espace de gestion du personnel et des intervenants.
-    </p>
-
-  </div>
-
+<main>
+<nav id="nav"></nav>
+<div id="app"></div>
+</main>
+
+<div class="bottom">
+<button onclick="page('home')"><span>🏠</span>Accueil</button>
+<button onclick="page('projects')"><span>🏗️</span>Chantiers</button>
+<button onclick="page('workers')"><span>👷</span>Ouvriers</button>
+<button onclick="page('money')"><span>💰</span>Finances</button>
+<button onclick="page('tools')"><span>☰</span>Plus</button>
 </div>
-
 
 <script>
 
-let chantiers =
-JSON.parse(localStorage.getItem("chantiers") || "[]");
+const KEY="SPIDS_MANAGER_DATA";
 
-let workers =
-JSON.parse(localStorage.getItem("workers") || "[]");
+let data=JSON.parse(localStorage.getItem(KEY)||"null")||{
+projects:[],
+workers:[],
+materials:[],
+expenses:[],
+suppliers:[],
+invoices:[],
+payments:[],
+documents:[],
+meetings:[],
+samples:[],
+tasks:[],
+photos:[]
+};
 
-let expenses =
-JSON.parse(localStorage.getItem("expenses") || "[]");
+let current="";
+let currentPage="home";
 
-let incomes =
-JSON.parse(localStorage.getItem("incomes") || "[]");
-
-let invoices =
-JSON.parse(localStorage.getItem("invoices") || "[]");
-
-let meetings =
-JSON.parse(localStorage.getItem("meetings") || "[]");
-
-let materials =
-JSON.parse(localStorage.getItem("materials") || "[]");
-
+const menus=[
+["home","🏠 Accueil"],
+["projects","🏗️ Chantiers"],
+["workers","👷 Ouvriers"],
+["materials","🧱 Matériaux"],
+["expenses","💸 Charges"],
+["suppliers","🚚 Fournisseurs"],
+["invoices","🧾 Factures"],
+["payments","💵 Encaissements"],
+["documents","📄 Documents"],
+["meetings","🤝 Réunions"],
+["samples","🧪 Échantillons"],
+["tasks","📅 Planning"],
+["photos","📸 Photos"],
+["money","📊 Finances"]
+];
 
 function save(){
-
-localStorage.setItem("chantiers",JSON.stringify(chantiers));
-localStorage.setItem("workers",JSON.stringify(workers));
-localStorage.setItem("expenses",JSON.stringify(expenses));
-localStorage.setItem("incomes",JSON.stringify(incomes));
-localStorage.setItem("invoices",JSON.stringify(invoices));
-localStorage.setItem("meetings",JSON.stringify(meetings));
-localStorage.setItem("materials",JSON.stringify(materials));
-
-updateDashboard();
-
-}
-
-
-function showSection(id){
-
-document.querySelectorAll(".section")
-.forEach(x=>x.classList.add("hidden"));
-
-document.getElementById(id)
-.classList.remove("hidden");
-
-}
-
-
-function addChantier(){
-
-let name=document.getElementById("chantierName").value;
-let client=document.getElementById("chantierClient").value;
-let ville=document.getElementById("chantierVille").value;
-
-if(!name)return;
-
-chantiers.push({
-name:name,
-client:client,
-ville:ville
-});
-
-save();
+localStorage.setItem(KEY,JSON.stringify(data));
 render();
-
-document.getElementById("chantierName").value="";
-document.getElementById("chantierClient").value="";
-document.getElementById("chantierVille").value="";
-
 }
 
+function id(){
+return Date.now().toString(36)+Math.random().toString(36).slice(2);
+}
 
-function addWorker(){
+function money(n){
+return Number(n||0).toLocaleString("fr-FR",{minimumFractionDigits:2})+" DH";
+}
 
-let name=document.getElementById("workerName").value;
-let job=document.getElementById("workerJob").value;
-let salary=document.getElementById("workerSalary").value;
+function esc(x){
+return String(x||"").replace(/[&<>"']/g,m=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[m]));
+}
 
-if(!name)return;
+function projectName(){
+let p=data.projects.find(x=>x.id===current);
+return p?p.name:"Tous les chantiers";
+}
 
-workers.push({
-name:name,
-job:job,
-salary:Number(salary)
-});
+function filter(x){
+return !current||x.projectId===current;
+}
 
-save();
+function total(type,field="amount"){
+return data[type].filter(filter).reduce((s,x)=>s+Number(x[field]||0),0);
+}
+
+function page(p){
+currentPage=p;
 render();
-
+window.scrollTo(0,0);
 }
-
-
-function addExpense(){
-
-let name=document.getElementById("expenseName").value;
-let amount=document.getElementById("expenseAmount").value;
-
-if(!name)return;
-
-expenses.push({
-name:name,
-amount:Number(amount)
-});
-
-save();
-render();
-
-}
-
-
-function addIncome(){
-
-let name=document.getElementById("incomeName").value;
-let amount=document.getElementById("incomeAmount").value;
-
-if(!name)return;
-
-incomes.push({
-name:name,
-amount:Number(amount)
-});
-
-save();
-render();
-
-}
-
-
-function addInvoice(){
-
-let name=document.getElementById("invoiceName").value;
-let amount=document.getElementById("invoiceAmount").value;
-
-if(!name)return;
-
-invoices.push({
-name:name,
-amount:Number(amount)
-});
-
-save();
-render();
-
-}
-
-
-function addMeeting(){
-
-let name=document.getElementById("meetingName").value;
-let date=document.getElementById("meetingDate").value;
-
-if(!name)return;
-
-meetings.push({
-name:name,
-date:date
-});
-
-save();
-render();
-
-}
-
-
-function addMaterial(){
-
-let name=document.getElementById("materialName").value;
-let qty=document.getElementById("materialQty").value;
-let price=document.getElementById("materialPrice").value;
-
-if(!name)return;
-
-materials.push({
-name:name,
-qty:Number(qty),
-price:Number(price)
-});
-
-save();
-render();
-
-}
-
-
-function removeItem(type,index){
-
-if(type==="chantier")chantiers.splice(index,1);
-if(type==="worker")workers.splice(index,1);
-if(type==="expense")expenses.splice(index,1);
-if(type==="income")incomes.splice(index,1);
-if(type==="invoice")invoices.splice(index,1);
-if(type==="meeting")meetings.splice(index,1);
-if(type==="material")materials.splice(index,1);
-
-save();
-render();
-
-}
-
 
 function render(){
 
-document.getElementById("chantierList").innerHTML =
-chantiers.map((x,i)=>
-`<div class="item">
-<b>${x.name}</b><br>
-Client: ${x.client}<br>
-Ville: ${x.ville}
-<br><button class="delete"
-onclick="removeItem('chantier',${i})">
-Supprimer
-</button>
-</div>`).join("");
+document.getElementById("subtitle").textContent=
+current?"Chantier : "+projectName():"Gestion complète des chantiers";
 
+document.getElementById("nav").innerHTML=
+menus.map(x=>`
+<button class="${currentPage==x[0]?"active":""}"
+onclick="page('${x[0]}')">${x[1]}</button>`).join("");
 
-document.getElementById("workerList").innerHTML =
-workers.map((x,i)=>
-`<div class="item">
-<b>${x.name}</b> - ${x.job}<br>
-${x.salary} DH / jour
-<br><button class="delete"
-onclick="removeItem('worker',${i})">
-Supprimer
-</button>
-</div>`).join("");
+let html="";
 
+if(currentPage=="home")html=home();
+if(currentPage=="projects")html=projects();
+if(currentPage=="workers")html=tablePage("👷 Ouvriers","workers",[
+["Nom","name"],["Fonction","role"],["Téléphone","phone"],["Salaire/jour","rate"]
+],addWorker);
 
-document.getElementById("expenseList").innerHTML =
-expenses.map((x,i)=>
-`<div class="item">
-${x.name} — <b>${x.amount} DH</b>
-<br><button class="delete"
-onclick="removeItem('expense',${i})">
-Supprimer
-</button>
-</div>`).join("");
+if(currentPage=="materials")html=tablePage("🧱 Matériaux","materials",[
+["Matériau","name"],["Unité","unit"],["Quantité","qty"],["Prix","price"],["Total","total"]
+],addMaterial);
 
+if(currentPage=="expenses")html=tablePage("💸 Charges","expenses",[
+["Date","date"],["Catégorie","category"],["Description","description"],["Montant","amount"]
+],addExpense);
 
-document.getElementById("incomeList").innerHTML =
-incomes.map((x,i)=>
-`<div class="item">
-${x.name} — <b>${x.amount} DH</b>
-<br><button class="delete"
-onclick="removeItem('income',${i})">
-Supprimer
-</button>
-</div>`).join("");
+if(currentPage=="suppliers")html=tablePage("🚚 Fournisseurs","suppliers",[
+["Nom","name"],["Contact","contact"],["Téléphone","phone"],["Spécialité","specialty"]
+],addSupplier);
 
+if(currentPage=="invoices")html=tablePage("🧾 Factures","invoices",[
+["N°","number"],["Client/Fournisseur","party"],["Date","date"],["Montant","amount"],["Statut","status"]
+],addInvoice);
 
-document.getElementById("invoiceList").innerHTML =
-invoices.map((x,i)=>
-`<div class="item">
-${x.name} — <b>${x.amount} DH</b>
-<br><button class="delete"
-onclick="removeItem('invoice',${i})">
-Supprimer
-</button>
-</div>`).join("");
+if(currentPage=="payments")html=tablePage("💵 Encaissements","payments",[
+["Date","date"],["Client","client"],["Référence","reference"],["Montant","amount"],["Mode","method"]
+],addPayment);
 
+if(currentPage=="documents")html=tablePage("📄 Documents","documents",[
+["Nom","name"],["Type","type"],["Date","date"],["Note","note"]
+],addDocument);
 
-document.getElementById("meetingList").innerHTML =
-meetings.map((x,i)=>
-`<div class="item">
-${x.name} — ${x.date}
-<br><button class="delete"
-onclick="removeItem('meeting',${i})">
-Supprimer
-</button>
-</div>`).join("");
+if(currentPage=="meetings")html=tablePage("🤝 Réunions","meetings",[
+["Date","date"],["Objet","subject"],["Participants","people"],["Compte rendu","report"]
+],addMeeting);
 
+if(currentPage=="samples")html=tablePage("🧪 Échantillons","samples",[
+["Référence","ref"],["Matériau","material"],["Fournisseur","supplier"],["Statut","status"],["Note","note"]
+],addSample);
 
-document.getElementById("materialList").innerHTML =
-materials.map((x,i)=>
-`<div class="item">
-${x.name} — ${x.qty} × ${x.price} DH
-<br><button class="delete"
-onclick="removeItem('material',${i})">
-Supprimer
-</button>
-</div>`).join("");
+if(currentPage=="tasks")html=tablePage("📅 Planning","tasks",[
+["Début","start"],["Fin","end"],["Tâche","task"],["Responsable","owner"],["Statut","status"]
+],addTask);
 
+if(currentPage=="photos")html=photos();
+if(currentPage=="money")html=moneyPage();
+if(currentPage=="tools")html=tools();
+
+document.getElementById("app").innerHTML=html;
 }
 
+function home(){
 
-function updateDashboard(){
+let income=total("payments");
+let expense=total("expenses");
+let material=total("materials","total");
 
-document.getElementById("chantierCount")
-.innerText=chantiers.length;
+return `
+<div class="card">
+<h2>Tableau de bord</h2>
+<p class="muted">${current?esc(projectName()):"Vue générale"}</p>
+<button class="green" onclick="addProject()">＋ Nouveau chantier</button>
+</div>
 
-document.getElementById("workerCount")
-.innerText=workers.length;
+<div class="grid">
 
-let exp=expenses.reduce((a,b)=>a+b.amount,0);
+<div class="card stat">
+<div class="muted">Chantiers</div>
+<b>${data.projects.length}</b>
+</div>
 
-let inc=incomes.reduce((a,b)=>a+b.amount,0);
+<div class="card stat">
+<div class="muted">Ouvriers</div>
+<b>${data.workers.filter(filter).length}</b>
+</div>
 
-document.getElementById("expenseTotal")
-.innerText=exp.toLocaleString()+" DH";
+<div class="card stat">
+<div class="muted">Encaissements</div>
+<b>${money(income)}</b>
+</div>
 
-document.getElementById("incomeTotal")
-.innerText=inc.toLocaleString()+" DH";
+<div class="card stat">
+<div class="muted">Charges</div>
+<b>${money(expense)}</b>
+</div>
 
+</div>
+
+<div class="two">
+
+<div class="card">
+<h3>💰 Situation financière</h3>
+<p>Matériaux : <b>${money(material)}</b></p>
+<p>Charges : <b>${money(expense)}</b></p>
+<p>Encaissements : <b>${money(income)}</b></p>
+<hr>
+<h3>Solde : ${money(income-expense)}</h3>
+</div>
+
+<div class="card">
+<h3>⚡ Accès rapide</h3>
+<button onclick="page('workers')">👷 Ouvriers</button>
+<button onclick="page('materials')">🧱 Matériaux</button>
+<button onclick="page('expenses')">💸 Charges</button>
+<button onclick="page('payments')">💵 Encaissement</button>
+</div>
+
+</div>
+
+<div class="card">
+<h3>🏗️ Mes chantiers</h3>
+${data.projects.length?
+data.projects.map(projectCard).join(""):
+`<p class="muted">Aucun chantier. Crée ton premier chantier.</p>`}
+</div>
+`;
 }
 
+function projects(){
 
+return `
+<div class="card">
+<h2>🏗️ Chantiers</h2>
+<button class="green" onclick="addProject()">＋ Nouveau chantier</button>
+</div>
+
+${data.projects.map(projectCard).join("")||
+'<div class="card">Aucun chantier.</div>'}
+`;
+}
+
+function projectCard(p){
+
+let e=data.expenses.filter(x=>x.projectId==p.id)
+.reduce((s,x)=>s+Number(x.amount||0),0);
+
+let income=data.payments.filter(x=>x.projectId==p.id)
+.reduce((s,x)=>s+Number(x.amount||0),0);
+
+return `
+<div class="project">
+<h3>${esc(p.name)}</h3>
+<div class="muted">${esc(p.client||"Sans client")}</div>
+<p>${esc(p.address||"")}</p>
+
+<div class="two">
+<div>Budget<br><b>${money(p.budget)}</b></div>
+<div>Dépenses<br><b>${money(e)}</b></div>
+</div>
+
+<br>
+
+<button class="green" onclick="openProject('${p.id}')">
+Ouvrir le chantier
+</button>
+
+<button class="red" onclick="deleteProject('${p.id}')">
+Supprimer
+</button>
+</div>
+`;
+}
+
+function openProject(x){
+current=x;
+page("home");
+}
+
+function addProject(){
+
+modal("🏗️ Nouveau chantier",`
+
+<div class="form">
+
+<label>Nom du chantier
+<input id="p_name" placeholder="Villa Bouskoura">
+</label>
+
+<label>Client
+<input id="p_client">
+</label>
+
+<label>Budget DH
+<input id="p_budget" type="number">
+</label>
+
+<label>Adresse
+<input id="p_address">
+</label>
+
+<label>Date début
+<input id="p_start" type="date">
+</label>
+
+<label>Date fin prévue
+<input id="p_end" type="date">
+</label>
+
+<label class="full">Notes
+<textarea id="p_notes"></textarea>
+</label>
+
+</div>
+
+<button class="green" onclick="saveProject()">Créer le chantier</button>
+`);
+}
+
+function saveProject(){
+
+let p={
+id:id(),
+name:document.getElementById("p_name").value||"Nouveau chantier",
+client:document.getElementById("p_client").value,
+budget:Number(document.getElementById("p_budget").value||0),
+address:document.getElementById("p_address").value,
+start:document.getElementById("p_start").value,
+end:document.getElementById("p_end").value,
+notes:document.getElementById("p_notes").value
+};
+
+data.projects.push(p);
+current=p.id;
+
+closeModal();
+save();
+}
+
+function deleteProject(x){
+
+if(!confirm("Supprimer ce chantier et ses données ?"))return;
+
+data.projects=data.projects.filter(p=>p.id!=x);
+
+[
+"workers","materials","expenses","invoices",
+"payments","documents","meetings","samples",
+"tasks","photos"
+].forEach(t=>{
+data[t]=data[t].filter(a=>a.projectId!=x);
+});
+
+if(current==x)current="";
+save();
+}
+
+function tablePage(title,type,cols,add){
+
+let list=data[type].filter(filter);
+
+return `
+<div class="card">
+<h2>${title}</h2>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+
+<button class="green" onclick="${add.name}()">＋ Ajouter</button>
+
+<select onchange="changeProject(this.value)">
+<option value="">Tous les chantiers</option>
+${data.projects.map(p=>`
+<option value="${p.id}" ${current==p.id?"selected":""}>
+${esc(p.name)}
+</option>`).join("")}
+</select>
+
+</div>
+</div>
+
+<div class="card table">
+<table>
+
+<thead>
+<tr>
+${cols.map(c=>`<th>${c[0]}</th>`).join("")}
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+${list.map(x=>`
+<tr>
+${cols.map(c=>`
+<td>
+${c[1]=="amount"||c[1]=="price"||c[1]=="total"||c[1]=="rate"
+?money(x[c[1]])
+:esc(x[c[1]])}
+</td>`).join("")}
+
+<td>
+<button class="red" onclick="removeItem('${type}','${x.id}')">✕</button>
+</td>
+
+</tr>
+`).join("")}
+
+</tbody>
+</table>
+
+${!list.length?'<p class="muted">Aucun élément.</p>':""}
+
+</div>
+`;
+}
+
+function changeProject(x){
+current=x;
 render();
-updateDashboard();
+}
 
-</script>
+function projectField(){
 
-</body>
-</html>
+return `
+<label>Chantier
+<select id="f_project">
+<option value="">Choisir</option>
+${data.projects.map(p=>`
+<option value="${p.id}" ${current==p.id?"selected":""}>
+${esc(p.name)}
+</option>`).join("")}
+</select>
+</label>
+`;
+}
+
+function addWorker(){
+
+modal("👷 Ajouter un ouvrier",`
+
+<div class="form">
+${projectField()}
+
+<label>Nom
+<input id="f_name">
+</label>
+
+<label>Fonction
+<input id="f_role" placeholder="Maçon, ferrailleur...">
+</label>
+
+<label>Téléphone
+<input id="f_phone">
+</label>
+
+<label>Salaire / jour
+<input id="f_rate" type="number">
+</label>
+
+<label>Jours / présence
+<input id="f_days" type="number">
+</label>
+
+<label>Transport
+<input id="f_transport" type="number">
+</label>
+
+</div>
+
+<button class="green" onclick="add('workers',{
+name:'f_name',role:'f_role',phone:'f_phone',
+rate:'f_rate',days:'f_days',transport:'f_transport'
+})">Enregistrer</button>
+`);
+}
+
+function addMaterial(){
+
+modal("🧱 Ajouter matériau",`
+
+<div class="form">
+${projectField()}
+
+<label>Matériau
+<input id="f_name" placeholder="Ciment, acier, sable...">
+</label>
+
+<label>Unité
+<input id="f_unit" placeholder="kg, sac, m3...">
+</label>
+
+<label>Quantité
+<input id="f_qty" type="number">
+</label>
+
+<label>Prix unitaire DH
+<input id="f_price" type="number">
+</label>
+
+<label>Fournisseur
+<input id="f_supplier">
+</label>
+
+</div>
+
+<button class="green" onclick="addMaterialSave()">Enregistrer</button>
+`);
+}
+
+function addMaterialSave(){
+
+let q=Number(document.getElementById("f_qty").value||0);
+let p=Number(document.getElementById("f_price").value||0);
+
+data.materials.push({
+id:id(),
+projectId:document.getElementById("f_project").value,
+name:document.getElementById("f_name").value,
+unit:document.getElementById("f_unit").value,
+qty:q,
+price:p,
+total:q*p,
+supplier:document.getElementById("f_supplier").value
+});
+
+closeModal();
+save();
+}
+
+function addExpense(){
+
+modal("💸 Ajouter charge",`
+
+<div class="form">
+${projectField()}
+
+<label>Date
+<input id="f_date" type="date">
+</label>
+
+<label>Catégorie
+<input id="f_category" placeholder="Transport, main d'oeuvre...">
+</label>
+
+<label class="full">Description
+<input id="f_description">
+</label>
+
+<label>Montant DH
+<input id="f_amount" type="number">
+</label>
+
+<label>Référence
+<input id="f_ref">
+</label>
+</div>
+
+<button class="green" onclick="add('expenses',{
+date:'f_date',category:'f_category',
+description:'f_description',amount:'f_amount',reference:'f_ref'
+})">Enregistrer</button>
+`);
+}
+
+function addSupplier(){
+
+modal("🚚 Fournisseur",`
+
+<div class="form">
+
+<label>Nom<input id="f_name"></label>
+<label>Contact<input id="f_contact"></label>
+<label>Téléphone<input id="f_phone"></label>
+<label>Spécialité<input id="f_specialty"></label>
+
+</div>
+
+<button class="green" onclick="add('suppliers',{
+name:'f_name',contact:'f_contact',
+phone:'f_phone',specialty:'f_specialty'
+})">Enregistrer</button>
+`);
+}
+
+function addInvoice(){
+
+modal("🧾 Facture",`
+
+<div class="form">
+${projectField()}
+
+<label>N° facture<input id="f_number"></label>
+<label>Client / Fournisseur<input id="f_party"></label>
+<label>Date<input id="f_date" type="date"></label>
+<label>Montant DH<input id="f_amount" type="number"></label>
+
+<label>Statut
+<select id="f_status">
+<option>À payer</option>
+<option>Partielle</option>
+<option>Payée</option>
+</select>
+</label>
+</div>
+
+<button class="green" onclick="add('invoices',{
+number:'f_number',party:'f_party',
+date:'f_date',amount:'f_amount',status:'f_status'
+})">Enregistrer</button>
+`);
+}
+
+function addPayment(){
+
+modal("💵 Encaissement",`
+
+<div class="form">
+${projectField()}
+
+<label>Date<input id="f_date" type="date"></label>
+<label>Client<input id="f_client"></label>
+<label>Référence<input id="f_reference"></label>
+<label>Montant DH<input id="f_amount" type="number"></label>
+
+<label>Mode
+<select id="f_method">
+<option>Virement</option>
+<option>Chèque</option>
+<option>Espèces</option>
+<option>Autre</option>
+</select>
+</label>
+
+</div>
+
+<button class="green" onclick="add('payments',{
+date:'f_date',client:'f_client',
+reference:'f_reference',amount:'f_amount',
+method:'f_method'
+})">Enregistrer</button>
+`);
+}
+
+function addDocument(){
+
+modal("📄 Document",`
+
+<div class="form">
+${projectField()}
+
+<label>Nom<input id="f_name"></label>
+<label>Type<input id="f_type"></label>
+<label>Date<input id="f_date" type="date"></label>
+<label class="full">Lien / note<input id="f_note"></label>
+</div>
+
+<button class="green" onclick="add('documents',{
+name:'f_name',type:'f_type',
+date:'f_date',note:'f_note'
+})">Enregistrer</button>
+`);
+}
+
+function addMeeting(){
+
+modal("🤝 Réunion",`
+
+<div class="form">
+${projectField()}
+
+<label>Date<input id="f_date" type="date"></label>
+<label>Objet<input id="f_subject"></label>
+<label>Participants<input id="f_people"></label>
+
+<label class="full">Compte rendu
+<textarea id="f_report"></textarea>
+</label>
+</div>
+
+<button class="green" onclick="add('meetings',{
+date:'f_date',subject:'f_subject',
+people:'f_people',report:'f_report'
+})">Enregistrer</button>
+`);
+}
+
+function addSample(){
+
+modal("🧪 Échantillon",`
+
+<div class="form">
+${projectField()}
+
+<label>Référence<input id="f_ref"></label>
+<label>Matériau<input id="f_material"></label>
+<label>Fournisseur<input id="f_supplier"></label>
+
+<label>Statut
+<select id="f_status">
+<option>À valider</option>
+<option>Validé</option>
+<option>Refusé</option>
+</select>
+</label>
+
+<label class="full">Note<textarea id="f_note"></textarea></label>
+</div>
+
+<button class="green" onclick="add('samples',{
+ref:'f_ref',material:'f_material',
+supplier:'f_supplier',status:'f_status',
+note:'f_note'
+})">Enregistrer</button>
+`);
+}
+
+function addTask(){
+
+modal("📅 Planning",`
+
+<div class="form">
+${projectField()}
+
+<label>Début<input id="f_start" type="date"></label>
+<label>Fin<input id="f_end" type="date"></label>
+<label>Tâche<input id="f_task"></label>
+<label>Responsable<input id="f_owner"></label>
+
+<label>Statut
+<select id="f_status">
+<option>À faire</option>
+<option>En cours</option>
+<option>Terminé</option>
+</select>
+</label>
+
+</div>
+
+<button class="green" onclick="add('tasks',{
+start:'f_start',end:'f_end',
+task:'f_task',owner:'f_owner',
+status:'f_status'
+})">Enregistrer</button>
+`);
+}
+
+function add(type,map){
+
+let x={id:id(),projectId:document.getElementById("f_project")?.value||current};
+
+Object.keys(map).forEach(k=>{
+let el=document.getElementById(map[k]);
+x[k]=el?el.value:"";
+});
+
+if(["amount","rate","transport"].some(k=>k in x)){
+Object.keys(x).forEach(k=>{
+if(["amount","rate","transport","days"].includes(k))
+x[k]=Number(x[k]||0);
+});
+}
+
+data[type].push(x);
+closeModal();
+save();
+}
+
+function removeItem(type,x){
+
+if(confirm("Supprimer ?")){
+data[type]=data[type].filter(a=>a.id!=x);
+save();
+}
+}
+
+function photos(){
+
+let list=data.photos.filter(filter);
+
+return `
+<div class="card">
+<h2>📸 Photos du chantier</h2>
+
+<input id="camera" type="file" accept="image/*" capture="environment">
+
+<br><br>
+
+<button class="green" onclick="addPhoto()">＋ Ajouter photo</button>
+</div>
+
+<div class="grid">
+${list.map(x=>`
+<div class="card">
+<img src="${x.data}">
+<p>${esc(x.name)}</p>
+<button class="red" onclick="removeItem('photos','${x.id}')">Supprimer</button>
+</div>
+`).join("")}
+</div>
+`;
+}
+
+function addPhoto(){
+
+let f=document.getElementById("camera").files[0];
+
+if(!f){
+alert("Choisis une photo.");
+return;
+}
+
+let reader=new FileReader();
+
+reader.onload=function(){
+data.photos.push({
+id:id(),
+projectId:current,
+name:f.name,
+data:reader.result
+});
+
+save();
+};
+
+reader.readAsDataURL(f);
+}
+
+function moneyPage(){
+
+let income=total("payments");
+let expenses=total("expenses");
+let materials=total("materials","total");
+
+return `
+<div class="card">
+<h2>📊 Finances</h2>
+<p>Budget chantier : <b>${
+current?
+money(data.projects.find(x=>x.id==current)?.budget):"Tous"
+}</b></p>
+</div>
+
+<div class="grid">
+
+<div class="card stat">
+Encaissements
+<b>${money(income)}</b>
+</div>
+
+<div class="card stat">
+Charges
+<b>${money(expenses)}</b>
+</div>
+
+<div class="card stat">
+Matériaux
+<b>${money(materials)}</b>
+</div>
+
+<div class="card stat">
+Solde
+<b>${money(income-expenses)}</b>
+</div>
+
+</div>
+
+<div class="card">
+<h3>Résumé</h3>
+<p>Matériaux : ${money(materials)}</p>
+<p>Charges : ${money(expenses)}</p>
+<p>Encaissements : ${money(income)}</p>
+<hr
