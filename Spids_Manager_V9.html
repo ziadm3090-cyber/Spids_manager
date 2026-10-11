@@ -1,132 +1,396 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#10243a">
-<title>Spids Manager V8</title>
+<title>Spids Manager</title>
 <style>
-:root{--navy:#10243a;--blue:#1769aa;--bg:#f2f5f9;--white:#fff;--green:#16845b;--red:#c94343;--line:#e1e7ef}
+:root{--navy:#10243a;--blue:#1769aa;--bg:#f2f5f9;--green:#16845b;--red:#c0392b}
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:#1b2939}
-header{background:var(--navy);color:white;padding:20px 16px 16px;position:sticky;top:0;z-index:5}
-.brand{font-size:23px;font-weight:800;letter-spacing:.3px}.brand span{color:#64c6ff}
-header p{font-size:12px;color:#c6d5e5;margin:5px 0 0}
-nav{display:flex;gap:8px;overflow-x:auto;padding:12px;background:white;border-bottom:1px solid var(--line)}
-nav button{white-space:nowrap;border:0;border-radius:9px;padding:10px 13px;background:#edf2f8;color:#24364a;font-weight:650}
-nav button.active{background:var(--blue);color:white}
-main{max-width:1100px;margin:auto;padding:16px}
-h2{font-size:22px;margin:4px 0 15px}h3{font-size:16px;margin:0 0 12px}.muted{color:#718096;font-size:13px}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px}
-.card,.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:12px}
-.metric{font-size:23px;font-weight:800;margin-top:8px;overflow-wrap:anywhere}.metric-label{font-size:12px;color:#718096}
-.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-button,.file-button{cursor:pointer;font-size:14px}
-.btn{border:0;border-radius:9px;background:var(--blue);color:white;padding:11px 14px;font-weight:650}
-.btn.secondary{background:#e9eff6;color:#24364a}.btn.danger{background:#fff0f0;color:var(--red)}.btn.small{padding:7px 9px;font-size:12px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #d4dce6;border-radius:9px;font-size:16px;background:white;color:#182a3d;margin-top:5px}
-label{font-size:13px;font-weight:650;display:block;margin-bottom:12px}textarea{min-height:75px;resize:vertical}
-.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.full{grid-column:1/-1}
-.item{background:white;border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:9px}
-.itemtop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.itemtitle{font-weight:750;overflow-wrap:anywhere}
-.itemdetails{font-size:13px;line-height:1.7;color:#617187;margin:7px 0}.itemactions{display:flex;flex-wrap:wrap;gap:6px}
-.tag{display:inline-block;background:#e9f3ff;color:#155b94;border-radius:6px;padding:4px 7px;font-size:11px}
-.empty{text-align:center;padding:30px 10px;color:#77869a}.hidden{display:none!important}
-hr{border:0;border-top:1px solid var(--line);margin:14px 0}
-footer{text-align:center;padding:24px;color:#8090a2;font-size:12px}
-#notice{position:fixed;bottom:20px;left:15px;right:15px;background:#10243a;color:white;padding:14px;border-radius:12px;display:none;z-index:20;text-align:center}
-@media(min-width:700px){.cards{grid-template-columns:repeat(4,minmax(0,1fr))}.card{padding:20px}}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:#182435}
+header{background:var(--navy);color:white;padding:20px 16px}
+header h1{margin:0;font-size:24px}
+header p{margin:6px 0 0;color:#c6d5e5;font-size:13px}
+main{max-width:1100px;margin:auto;padding:14px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:9px;padding:11px 14px;background:var(--blue);color:white;font-weight:600}
+button.secondary{background:#e2e8f0;color:#243448}
+button.danger{background:#b83232}
+button.success{background:var(--green)}
+input,select,textarea{width:100%;padding:11px;border:1px solid #ccd5df;border-radius:8px;background:white;color:#172435}
+label{display:block;font-size:13px;font-weight:650;margin:10px 0 5px}
+.card{background:white;border:1px solid #e0e6ee;border-radius:13px;padding:15px;margin-bottom:13px;box-shadow:0 2px 7px #10243a08}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.metric{background:white;padding:14px;border-radius:12px;border:1px solid #e0e6ee}
+.metric strong{display:block;font-size:22px;margin-top:5px;overflow-wrap:anywhere}
+.muted{color:#718096;font-size:13px}
+nav{display:flex;gap:8px;overflow-x:auto;padding:10px 0 14px}
+nav button{white-space:nowrap;flex-shrink:0}
+nav button.active{background:var(--navy)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.actions button{font-size:13px;padding:9px}
+h2{font-size:21px;margin:8px 0 14px}
+h3{font-size:16px;margin:5px 0 10px}
+.item{padding:12px 0;border-bottom:1px solid #edf0f4}
+.item:last-child{border-bottom:0}
+.empty{padding:22px 8px;text-align:center;color:#718096}
+.hidden{display:none!important}
+.small{font-size:12px;color:#718096}
+.photo{width:100%;max-height:240px;object-fit:cover;border-radius:9px;margin-top:8px}
+.notice{background:#e9f3ff;border-radius:9px;padding:11px;margin-bottom:12px;font-size:13px}
+footer{text-align:center;color:#718096;font-size:12px;padding:20px}
+@media(min-width:700px){.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
 </style>
 </head>
 <body>
-<header><div class="brand">SPIDS <span>MANAGER</span></div><p>Gestion de chantiers · Gestion financière · Métré</p></header>
-<nav id="nav">
-<button class="active" data-page="dashboard">Accueil</button><button data-page="chantiers">Chantiers</button><button data-page="ouvriers">Ouvriers</button><button data-page="materiaux">Matériaux</button><button data-page="fournisseurs">Fournisseurs</button><button data-page="prestataires">Prestataires</button><button data-page="planning">Planning</button><button data-page="photos">Photos</button><button data-page="depenses">Dépenses</button><button data-page="recettes">Recettes</button><button data-page="metre">Métré</button><button data-page="factures">Factures</button><button data-page="espaces">Espaces</button><button data-page="backup">Sauvegarde</button>
-</nav>
-<main>
-<section id="dashboard" class="page"><h2>Tableau de bord</h2><p class="muted">Vue générale de votre activité.</p>
-<div class="cards">
-<div class="card"><div class="metric-label">Chantiers</div><div class="metric" id="mChantiers">0</div></div>
-<div class="card"><div class="metric-label">Ouvriers</div><div class="metric" id="mOuvriers">0</div></div>
-<div class="card"><div class="metric-label">Dépenses</div><div class="metric" id="mDepenses">0 DH</div></div>
-<div class="card"><div class="metric-label">Recettes</div><div class="metric" id="mRecettes">0 DH</div></div>
-<div class="card"><div class="metric-label">Solde recettes - dépenses</div><div class="metric" id="mSolde">0 DH</div></div>
-<div class="card"><div class="metric-label">Matériaux enregistrés</div><div class="metric" id="mMateriaux">0</div></div>
-<div class="card"><div class="metric-label">Factures</div><div class="metric" id="mFactures">0</div></div>
-<div class="card"><div class="metric-label">Mesures enregistrées</div><div class="metric" id="mMetre">0</div></div>
-</div><div class="panel"><h3>Dernières opérations</h3><div id="recent"></div></div>
-<div class="toolbar"><button class="btn" onclick="go('chantiers')">+ Nouveau chantier</button><button class="btn secondary" onclick="go('depenses')">+ Dépense</button><button class="btn secondary" onclick="go('recettes')">+ Recette</button></div></section>
-<section id="chantiers" class="page hidden"><h2>Gestion des chantiers</h2><div class="panel"><h3>Ajouter un chantier</h3>
-<form id="create-chantiers" class="formgrid"><label>Nom du chantier<input name="nom" required placeholder="Villa, immeuble..."></label><label>Client<input name="client" placeholder="Nom du client"></label><label>Ville / adresse<input name="adresse" placeholder="Casablanca..."></label><label>Budget prévu (DH)<input name="budget" type="number" min="0" step=".01" value="0"></label><label>Date de début<input name="date" type="date"></label><label>Statut<select name="statut"><option>En cours</option><option>En préparation</option><option>Terminé</option><option>En pause</option></select></label><label class="full">Notes<textarea name="notes"></textarea></label><div class="full"><button class="btn">Enregistrer le chantier</button></div></form></div><div id="list-chantiers"></div></section>
-<section id="chantier-detail" class="page hidden"><div class="toolbar"><button class="btn secondary" onclick="go('chantiers')">← Retour aux chantiers</button></div><div id="project-detail-content"></div></section>
-<section id="ouvriers" class="page hidden"><h2>Ouvriers et personnel</h2><div class="panel"><h3>Ajouter un ouvrier</h3><form id="create-ouvriers" class="formgrid"><label>Nom complet<input name="nom" required></label><label>Téléphone<input name="telephone" type="tel"></label><label>Fonction<input name="fonction" placeholder="Maçon, ferrailleur..."></label><label>Chantier<select name="chantier" class="project-select"></select></label><label>Salaire journalier (DH)<input name="salaire" type="number" min="0" step=".01" value="0"></label><label>Jours travaillés<input name="jours" type="number" min="0" step=".5" value="0"></label><label>Transport (DH)<input name="transport" type="number" min="0" step=".01" value="0"></label><label class="full">Notes<textarea name="notes"></textarea></label><div class="full"><button class="btn">Enregistrer l'ouvrier</button></div></form></div><div id="list-ouvriers"></div></section>
-<section id="materiaux" class="page hidden"><h2>Matériaux et stock</h2><div class="panel"><h3>Ajouter un matériau</h3><form id="create-materiaux" class="formgrid"><label>Désignation<input name="nom" required placeholder="Ciment, acier..."></label><label>Chantier<select name="chantier" class="project-select"></select></label><label>Quantité<input name="quantite" type="number" min="0" step=".001" required></label><label>Unité<select name="unite"><option>unité</option><option>kg</option><option>tonne</option><option>sac</option><option>m³</option><option>m²</option><option>mètre</option><option>litre</option></select></label><label>Prix unitaire (DH)<input name="prix" type="number" min="0" step=".01" value="0"></label><label>Fournisseur<input name="fournisseur"></label><div class="full"><button class="btn">Enregistrer le matériau</button></div></form></div><div id="list-materiaux"></div></section>
-<section id="fournisseurs" class="page hidden"><h2>Fournisseurs</h2><div class="panel"><h3>Ajouter un fournisseur</h3><form id="create-fournisseurs" class="formgrid"><label>Nom du fournisseur<input name="nom" required></label><label>Chantier<select name="chantier" class="project-select"></select></label><label>Spécialité<input name="specialite" placeholder="Béton, acier, plomberie..."></label><label>Contact<input name="contact"></label><label>Téléphone<input name="telephone" type="tel"></label><label>E-mail<input name="email" type="email"></label><label class="full">Adresse<textarea name="adresse"></textarea></label><label class="full">Notes<textarea name="notes"></textarea></label><div class="full"><button class="btn">Enregistrer le fournisseur</button></div></form></div><div id="list-fournisseurs"></div></section>
-<section id="prestataires" class="page hidden"><h2>Prestataires / sous-traitants</h2><div class="panel"><h3>Ajouter un prestataire</h3><form id="create-prestataires" class="formgrid"><label>Nom / entreprise<input name="nom" required></label><label>Chantier<select name="chantier" class="project-select"></select></label><label>Corps de métier<input name="metier" placeholder="Électricité, plomberie, peinture..."></label><label>Contact<input name="contact"></label><label>Téléphone<input name="telephone" type="tel"></label><label>Montant du marché (DH)<input name="montant" type="number" min="0" step=".01" value="0"></label><label>Montant payé (DH)<input name="paye" type="number" min="0" step=".01" value="0"></label><label>Statut<select name="statut"><option>À consulter</option><option>Devis reçu</option><option>En cours</option><option>Terminé</option><option>Réglé</option></select></label><label class="full">Notes<textarea name="notes"></textarea></label><div class="full"><button class="btn">Enregistrer le prestataire</button></div></form></div><div id="list-prestataires"></div></section>
-<section id="planning" class="page hidden"><h2>Planning des travaux</h2><div class="panel"><h3>Ajouter une tâche au planning</h3><form id="create-planning" class="formgrid"><label>Tâche / phase<input name="nom" required placeholder="Fondations, dalle, maçonnerie..."></label><label>Chantier<select name="chantier" class="project-select"></select></label><label>Date de début<input name="debut" type="date" required></label><label>Date de fin prévue<input name="fin" type="date" required></label><label>Responsable / entreprise<input name="responsable"></label><label>Statut<select name="statut"><option>À faire</option><option>En cours</option><option>Terminé</option><option>En retard</option><option>En attente</option></select></label><label class="full">Notes<textarea name="notes"></textarea></label><div class="full"><button class="btn">Enregistrer la tâche</button></div></form></div><div id="list-planning"></div></section>
-<section id="photos" class="page hidden"><h2>Photos du chantier</h2><div class="panel"><h3>Ajouter des photos</h3><form id="create-photos" class="formgrid"><label>Chantier<select name="chantier" class="project-select" required></select></label><label>Date<input name="date" type="date"></label><label class="full">Description / zone photographiée<input name="description" placeholder="Façade, ferraillage, avancement..."></label><label class="full">Choisir une ou plusieurs photos<input name="images" type="file" accept="image/*" multiple required></label><div class="full muted">Les photos seront redimensionnées pour réduire leur taille. Pensez à exporter régulièrement une sauvegarde.</div><div class="full"><button class="btn">Enregistrer les photos</button></div></form></div><div id="list-photos"></div></section>
-<section id="depenses" class="page hidden"><h2>Dépenses de chantier</h2><div class="panel"><h3>Enregistrer une dépense</h3><form id="create-depenses" class="formgrid"><label>Désignation<input name="nom" required placeholder="Achat, main-d'œuvre..."></label><label>Chantier<select name="chantier" class="project-select"></select></label><label>Catégorie<select name="categorie"><option>Matériaux</option><option>Main-d'œuvre</option><option>Transport</option><option>Location matériel</option><option>Terrassement</option><option>Fournitures</option><option>Autre</option></select></label><label>Montant (DH)<input name="montant" type="number" min="0" step=".01" required></label><label>Date<input name="date" type="date"></label><label>Fournisseur / bénéficiaire<input name="beneficiaire"></label><label>Référence du reçu<input name="reference"></label><label class="full">Notes<textarea name="notes"></textarea></label><div class="full"><button class="btn">Enregistrer la dépense</button></div></form></div><div id="list-depenses"></div></section>
-<section id="recettes" class="page hidden"><h2>Recettes et encaissements</h2><div class="panel"><h3>Enregistrer une recette</h3><form id="create-recettes" class="formgrid"><label>Désignation<input name="nom" required placeholder="Avance, situation..."></label><label>Chantier<select name="chantier" class="project-select"></select></label><label>Client<input name="client"></label><label>Montant reçu (DH)<input name="montant" type="number" min="0" step=".01" required></label><label>Date<input name="date" type="date"></label><label>Mode de paiement<select name="mode"><option>Virement</option><option>Chèque</option><option>Espèces</option><option>Effet</option><option>Autre</option></select></label><label>Référence<input name="reference"></label><label class="full">Notes<textarea name="notes"></textarea></label><div class="full"><button class="btn">Enregistrer la recette</button></div></form></div><div id="list-recettes"></div></section>
-<section id="metre" class="page hidden"><h2>Métré et calcul des quantités</h2><div class="panel"><h3>Nouvelle mesure</h3><form id="create-metre" class="formgrid"><label>Désignation<input name="nom" required placeholder="Dalle, mur, pièce..."></label><label>Chantier<select name="chantier" class="project-select"></select></label><label>Type de calcul<select name="type"><option value="surface">Surface (m²)</option><option value="volume">Volume (m³)</option><option value="perimetre">Périmètre (m)</option><option value="longueur">Longueur (m)</option></select></label><label>Longueur (m)<input name="longueur" type="number" min="0" step=".001" value="0"></label><label>Largeur (m)<input name="largeur" type="number" min="0" step=".001" value="0"></label><label>Hauteur / épaisseur (m)<input name="hauteur" type="number" min="0" step=".001" value="0"></label><label>Nombre d'éléments<input name="quantite" type="number" min="0" step=".001" value="1"></label><label class="full">Notes<textarea name="notes"></textarea></label><div class="full"><button class="btn">Calculer et enregistrer</button></div></form><p class="muted">Surface = longueur × largeur × quantité. Volume = longueur × largeur × hauteur × quantité. Périmètre rectangulaire = 2 × (longueur + largeur).</p></div><div id="list-metre"></div></section>
-<section id="factures" class="page hidden"><h2>Factures et situations</h2><div class="panel"><h3>Nouvelle facture</h3><form id="create-factures" class="formgrid"><label>Numéro de facture<input name="numero" required placeholder="FAC-001"></label><label>Client<input name="client" required></label><label>Chantier<select name="chantier" class="project-select"></select></label><label>Date<input name="date" type="date"></label><label>Montant HT (DH)<input name="ht" type="number" min="0" step=".01" value="0" required></label><label>TVA (%)<input name="tva" type="number" min="0" max="100" step=".01" value="20"></label><label>Montant payé (DH)<input name="paye" type="number" min="0" step=".01" value="0"></label><label>Statut<select name="statut"><option>À payer</option><option>Partiellement payée</option><option>Payée</option></select></label><div class="full"><button class="btn">Enregistrer la facture</button></div></form></div><div id="list-factures"></div></section>
-<section id="espaces" class="page hidden"><h2>Espaces et accès</h2><div class="panel"><h3>Choisir un espace</h3><p class="muted">La sélection organise l'affichage sur cet appareil. Elle ne constitue pas un système sécurisé de comptes utilisateurs.</p><label>Espace actif<select id="active-space"><option value="Personnel">Personnel privé</option><option value="Clients">Clients</option><option value="Agences / Associés">Agences / Associés</option></select></label><div class="toolbar"><button class="btn" onclick="saveSpace()">Enregistrer l'espace</button></div><div id="space-status"></div></div><div class="panel"><h3>Informations de l'entreprise</h3><form id="company-form"><label>Nom de l'entreprise<input name="nom" placeholder="Nom de votre société"></label><label>Téléphone<input name="telephone" type="tel"></label><label>Adresse<input name="adresse"></label><label>ICE / Identifiant fiscal<input name="ice"></label><button class="btn">Enregistrer les informations</button></form><p id="company-status" class="muted"></p></div></section>
-<section id="backup" class="page hidden"><h2>Sauvegarde et données</h2><div class="panel"><h3>Exporter les données</h3><p class="muted">Téléchargez un fichier JSON contenant les données enregistrées sur cet appareil.</p><button class="btn" onclick="exportData()">Télécharger la sauvegarde</button></div><div class="panel"><h3>Restaurer une sauvegarde</h3><p class="muted">Les données actuelles seront remplacées par le contenu du fichier choisi.</p><input id="import-file" type="file" accept=".json,application/json"><div class="toolbar"><button class="btn" onclick="importData()">Restaurer les données</button></div></div><div class="panel"><h3>Gestion des données</h3><p class="muted">Les données sont conservées dans le stockage local du navigateur de cet appareil.</p><button class="btn danger" onclick="clearData()">Effacer toutes les données</button></div></section>
-</main><footer>Spids Manager · Gestion de chantier · Version HTML autonome</footer><div id="notice"></div>
-<script>
-(function(){
-"use strict";
-const KEY="spids_manager_data_v7";
-const initial={chantiers:[],ouvriers:[],materiaux:[],fournisseurs:[],prestataires:[],planning:[],photos:[],depenses:[],recettes:[],metre:[],factures:[],space:"Personnel",company:{nom:"",telephone:"",adresse:"",ice:""}};
-let db;try{db=Object.assign({},initial,JSON.parse(localStorage.getItem(KEY)||"{}"))}catch(e){db=JSON.parse(JSON.stringify(initial))}
-for(const k of ["chantiers","ouvriers","materiaux","fournisseurs","prestataires","planning","photos","depenses","recettes","metre","factures"])if(!Array.isArray(db[k]))db[k]=[];
-if(!db.company)db.company={...initial.company};if(!Array.isArray(db.fournisseurs))db.fournisseurs=[];
-const $=id=>document.getElementById(id);
-let currentProjectFilter="";
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const money=n=>(Number(n)||0).toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" DH";
-const today=()=>new Date().toISOString().slice(0,10);
-function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){notify("Stockage indisponible. Exportez vos données.")}renderDashboard()}
-function notify(msg){const n=$("notice");n.textContent=msg;n.style.display="block";clearTimeout(notify.timer);notify.timer=setTimeout(()=>n.style.display="none",2600)}
-window.go=function(page){document.querySelectorAll(".page").forEach(e=>e.classList.add("hidden"));$(page).classList.remove("hidden");document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));refreshSelects();if(currentProjectFilter&&$("create-"+page)&&$("create-"+page).elements["chantier"]&&!$("create-"+page).dataset.editId)$("create-"+page).elements["chantier"].value=currentProjectFilter;if(page==="dashboard")renderDashboard();if(["chantiers","ouvriers","materiaux","fournisseurs","prestataires","planning","photos","depenses","recettes","metre","factures"].includes(page))renderList(page);if(page==="espaces")renderSpaces();window.scrollTo({top:0,behavior:"smooth"})};
-$("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-page]");if(b)go(b.dataset.page)});
-function projectName(id){const p=db.chantiers.find(x=>x.id===id);return p?p.nom:"Non spécifié"}
-function refreshSelects(){document.querySelectorAll(".project-select").forEach(s=>{const old=s.value;s.innerHTML='<option value="">Choisir un chantier</option>'+db.chantiers.map(p=>`<option value="${esc(p.id)}">${esc(p.nom)}</option>`).join("");if(db.chantiers.some(p=>p.id===old))s.value=old})}
-const schemas={prestataires:{title:"Prestataire",fields:["chantier","metier","contact","telephone","montant","paye","statut","notes"]},planning:{title:"Tâche planning",fields:["chantier","debut","fin","responsable","statut","notes"]},fournisseurs:{title:"Fournisseur",fields:["chantier","specialite","contact","telephone","email","adresse","notes"]},chantiers:{title:"Chantier",fields:["client","adresse","budget","date","statut","notes"]},ouvriers:{title:"Ouvrier",fields:["telephone","fonction","chantier","salaire","jours","transport","notes"]},materiaux:{title:"Matériau",fields:["chantier","quantite","unite","prix","fournisseur"]},depenses:{title:"Dépense",fields:["chantier","categorie","montant","date","beneficiaire","reference","notes"]},recettes:{title:"Recette",fields:["chantier","client","montant","date","mode","reference","notes"]},metre:{title:"Mesure",fields:["chantier","type","longueur","largeur","hauteur","quantite","resultat","notes"]},factures:{title:"Facture",fields:["numero","client","chantier","date","ht","tva","ttc","paye","reste","statut"]}};
-function details(type,x){const labels={client:"Client",adresse:"Adresse",budget:"Budget",specialite:"Spécialité",contact:"Contact",email:"E-mail",metier:"Corps de métier",paye:"Payé",debut:"Date de début",fin:"Date de fin prévue",responsable:"Responsable",date:"Date",statut:"Statut",notes:"Notes",telephone:"Téléphone",fonction:"Fonction",chantier:"Chantier",salaire:"Salaire/jour",jours:"Jours",transport:"Transport",quantite:"Quantité",unite:"Unité",prix:"Prix unitaire",fournisseur:"Fournisseur",categorie:"Catégorie",montant:"Montant",beneficiaire:"Bénéficiaire",reference:"Référence",mode:"Paiement",type:"Calcul",longueur:"Longueur (m)",largeur:"Largeur (m)",hauteur:"Hauteur (m)",resultat:"Résultat",numero:"Numéro",ht:"HT",tva:"TVA (%)",ttc:"TTC",paye:"Payé",reste:"Reste à payer"};return schemas[type].fields.filter(k=>x[k]!==undefined&&x[k]!==""&&x[k]!==null).map(k=>{let v=x[k];if(k==="chantier")v=projectName(v);if(["budget","montant","prix","salaire","transport","ht","ttc","paye","reste"].includes(k))v=money(v);return `<div><strong>${esc(labels[k]||k)} :</strong> ${esc(v)}</div>`}).join("")}
-function renderList(type){refreshSelects();const host=$("list-"+type);if(!host)return;const prev=host.previousElementSibling;if(prev&&prev.dataset.projectFilterBanner==="1")prev.remove();const allItems=db[type];const list=(currentProjectFilter&&type!=="chantiers")?allItems.filter(x=>String(x.chantier||"")===String(currentProjectFilter)):allItems;if(currentProjectFilter&&type!=="chantiers"){host.insertAdjacentHTML("beforebegin",`<div class="panel" data-project-filter-banner="1"><strong>Chantier sélectionné :</strong> ${esc(projectName(currentProjectFilter))}<div class="toolbar"><button class="btn secondary" onclick="clearProjectFilter()">Afficher tous les éléments</button><button class="btn secondary" onclick="openProject(currentProjectFilter)">Retour à la fiche du chantier</button></div></div>`)}if(!list.length){host.innerHTML='<div class="empty">Aucun élément enregistré pour le moment.</div>';return}host.innerHTML=list.slice().reverse().map(x=>{const title=x.nom||x.numero||"Élément";const amount=type==="depenses"||type==="recettes"?money(x.montant):type==="factures"?money(x.ttc):type==="materiaux"?money((Number(x.quantite)||0)*(Number(x.prix)||0)):type==="metre"?esc(x.resultat):"";return `<article class="item"><div class="itemtop"><div class="itemtitle">${esc(title)}</div><span class="tag">${esc(type==="chantiers"?(x.statut||"En cours"):schemas[type].title)}</span></div><div class="itemdetails">${details(type,x)}${amount?`<div><strong>${type==="metre"?"Quantité calculée":"Montant"} :</strong> ${amount}</div>`:""}</div><div class="itemactions">${type==="chantiers"?`<button class="btn small" onclick="openProject('${x.id}')">Ouvrir le chantier</button>`:""}<button class="btn small secondary" onclick="editItem('${type}','${x.id}')">Modifier</button><button class="btn small danger" onclick="deleteItem('${type}','${x.id}')">Supprimer</button></div></article>`}).join("")}
-window.deleteItem=function(type,id){const x=db[type].find(i=>i.id===id);if(!x)return;if(!confirm("Supprimer « "+(x.nom||x.numero||"cet élément")+" » ?"))return;db[type]=db[type].filter(i=>i.id!==id);save();renderList(type);refreshSelects();notify("Élément supprimé.")};
-window.editItem=function(type,id){const x=db[type].find(i=>i.id===id);if(!x)return;const form=$("create-"+type);if(!form)return;for(const k of Object.keys(x))if(k!=="id"&&form.elements[k])form.elements[k].value=x[k]??"";form.dataset.editId=id;form.querySelector("button").textContent="Enregistrer les modifications";go(type);form.scrollIntoView({behavior:"smooth",block:"start"})};
-window.clearProjectFilter=function(){currentProjectFilter="";const active=document.querySelector(".page:not(.hidden)");if(active&&schemas[active.id])renderList(active.id);notify("Affichage de tous les éléments.")};
-window.openProject=function(id){currentProjectFilter=String(id);go("chantier-detail")};
-window.openProjectModule=function(type){go(type)};
-function renderProjectDetail(){
- const p=db.chantiers.find(x=>String(x.id)===String(currentProjectFilter));const host=$("project-detail-content");
- if(!p){host.innerHTML='<div class="panel">Chantier introuvable.</div>';return}
- const keys=[ ["Ouvriers","ouvriers"],["Matériaux","materiaux"],["Fournisseurs","fournisseurs"],["Prestataires","prestataires"],["Planning","planning"],["Photos","photos"],["Dépenses","depenses"],["Recettes","recettes"],["Métré","metre"],["Factures","factures"] ];
- const related=k=>db[k].filter(x=>String(x.chantier||"")===String(p.id));
- const dep=related("depenses").reduce((a,x)=>a+number(x.montant),0),rec=related("recettes").reduce((a,x)=>a+number(x.montant),0);
- host.innerHTML=`<h2>${esc(p.nom)}</h2><p class="muted">Fiche individuelle du chantier. Les rubriques s’ouvrent avec les données filtrées sur ce chantier.</p>
- <div class="panel"><div class="itemdetails"><div><strong>Client :</strong> ${esc(p.client||"—")}</div><div><strong>Adresse :</strong> ${esc(p.adresse||"—")}</div><div><strong>Date de début :</strong> ${esc(p.date||"—")}</div><div><strong>Statut :</strong> ${esc(p.statut||"—")}</div><div><strong>Budget prévu :</strong> ${money(p.budget)}</div><div><strong>Notes :</strong> ${esc(p.notes||"—")}</div></div><div class="toolbar"><button class="btn secondary" onclick="editItem('chantiers','${p.id}')">Modifier la fiche</button></div></div>
- <div class="cards"><div class="card"><div class="metric-label">Ouvriers</div><div class="metric">${related("ouvriers").length}</div></div><div class="card"><div class="metric-label">Matériaux</div><div class="metric">${related("materiaux").length}</div></div><div class="card"><div class="metric-label">Fournisseurs</div><div class="metric">${related("fournisseurs").length}</div></div><div class="card"><div class="metric-label">Dépenses</div><div class="metric">${money(dep)}</div></div><div class="card"><div class="metric-label">Recettes</div><div class="metric">${money(rec)}</div></div><div class="card"><div class="metric-label">Solde du chantier</div><div class="metric">${money(rec-dep)}</div></div><div class="card"><div class="metric-label">Factures</div><div class="metric">${related("factures").length}</div></div></div>
- <div class="panel"><h3>Rubriques de ce chantier</h3><div class="formgrid">${keys.map(([label,key])=>`<div class="item"><div class="itemtitle">${label}</div><div class="itemdetails">${related(key).length} élément(s) enregistré(s)</div><button class="btn" onclick="openProjectModule('${key}')">Ouvrir ${label.toLowerCase()}</button></div>`).join("")}</div></div>`;
-}
+<header>
+  <h1>🏗️ Spids Manager</h1>
+  <p>Gestion des chantiers • Maroc • MAD (DH)</p>
+</header>
 
-function renderPhotoList(){const host=$("list-photos");if(!host)return;const items=db.photos.filter(x=>!currentProjectFilter||String(x.chantier)===String(currentProjectFilter));host.innerHTML=items.slice().reverse().map(x=>`<article class="item"><div class="itemtitle">${esc(x.description||"Photo du chantier")}</div><div class="itemdetails">${esc(projectName(x.chantier))} · ${esc(x.date||"")}</div><img src="${x.data}" alt="Photo chantier" style="display:block;width:100%;max-height:360px;object-fit:contain;border-radius:10px;background:#f2f5f9;margin:8px 0"><div class="itemactions"><button class="btn small danger" onclick="deletePhoto('${x.id}')">Supprimer</button></div></article>`).join("")||'<div class="empty">Aucune photo enregistrée pour ce chantier.</div>'}
-window.deletePhoto=function(id){if(!confirm("Supprimer cette photo ?"))return;db.photos=db.photos.filter(x=>String(x.id)!==String(id));save();renderPhotoList();notify("Photo supprimée.")};
-function resizeImage(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=reject;reader.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const max=1280,scale=Math.min(1,max/Math.max(img.width,img.height));const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL("image/jpeg",0.72))};img.src=reader.result};reader.readAsDataURL(file)})}
-$("create-photos").addEventListener("submit",async e=>{e.preventDefault();const f=e.currentTarget,files=Array.from(f.elements.images.files||[]);if(!files.length){notify("Choisissez au moins une photo.");return}const project=f.elements.chantier.value;if(!project){notify("Choisissez le chantier.");return}const date=f.elements.date.value||today(),description=f.elements.description.value||"Photo du chantier";try{for(const file of files){const data=await resizeImage(file);db.photos.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2),chantier:project,date,description,filename:file.name,data})}save();f.reset();renderPhotoList();notify(files.length+" photo(s) enregistrée(s). Si le stockage est plein, exportez une sauvegarde ou ajoutez moins de photos à la fois.")}catch(err){notify("Impossible de lire une photo. Essayez un autre fichier.")}});
-function renderDashboard(){$("mChantiers").textContent=db.chantiers.length;$("mOuvriers").textContent=db.ouvriers.length;$("mMateriaux").textContent=db.materiaux.length;$("mFactures").textContent=db.factures.length;$("mMetre").textContent=db.metre.length;const d=db.depenses.reduce((a,x)=>a+(Number(x.montant)||0),0),r=db.recettes.reduce((a,x)=>a+(Number(x.montant)||0),0);$("mDepenses").textContent=money(d);$("mRecettes").textContent=money(r);$("mSolde").textContent=money(r-d);const all=[...db.depenses.map(x=>({...x,_type:"Dépense",_amount:-Number(x.montant||0)})),...db.recettes.map(x=>({...x,_type:"Recette",_amount:Number(x.montant||0)}))].sort((a,b)=>(b.date||"").localeCompare(a.date||"")).slice(0,6);$("recent").innerHTML=all.length?all.map(x=>`<div class="item"><strong>${esc(x._type)} : ${esc(x.nom)}</strong><div class="itemdetails">${esc(x.date||"")} · ${esc(projectName(x.chantier))}</div><strong>${money(x._amount)}</strong></div>`).join(""):'<div class="empty">Aucune opération enregistrée.</div>'}
-function renderSpaces(){$("active-space").value=db.space||"Personnel";$("space-status").textContent="Espace sélectionné : "+db.space;const f=$("company-form").elements;for(const k of ["nom","telephone","adresse","ice"])if(f[k])f[k].value=db.company[k]||""}
-window.saveSpace=function(){db.space=$("active-space").value;save();renderSpaces();notify("Espace enregistré.")};
-$("company-form").addEventListener("submit",e=>{e.preventDefault();const f=e.currentTarget.elements;db.company={nom:f.nom.value,telephone:f.telephone.value,adresse:f.adresse.value,ice:f.ice.value};save();$("company-status").textContent="Informations enregistrées.";notify("Entreprise enregistrée.")});
-function number(v){return Number(v)||0}
-function calcMeasure(x){const l=number(x.longueur),w=number(x.largeur),h=number(x.hauteur),q=number(x.quantite);if(x.type==="surface")return {value:l*w*q,unit:"m²"};if(x.type==="volume")return {value:l*w*h*q,unit:"m³"};if(x.type==="perimetre")return {value:2*(l+w)*q,unit:"m"};return {value:l*q,unit:"m"}}
-for(const type of Object.keys(schemas)){const form=$("create-"+type);form.addEventListener("submit",e=>{e.preventDefault();const obj={};for(const el of Array.from(form.elements))if(el.name)obj[el.name]=el.value;if("date" in obj&&!obj.date)obj.date=today();if(type==="metre"){const r=calcMeasure(obj);obj.resultat=r.value.toLocaleString("fr-FR",{maximumFractionDigits:3})+" "+r.unit}if(type==="factures"){obj.ht=number(obj.ht);obj.tva=number(obj.tva);obj.paye=number(obj.paye);obj.ttc=obj.ht*(1+obj.tva/100);obj.reste=obj.ttc-obj.paye;obj.statut=obj.reste<=0?"Payée":obj.paye>0?"Partiellement payée":"À payer"}const editId=form.dataset.editId;if(editId){const i=db[type].findIndex(x=>x.id===editId);if(i>=0)db[type][i]={...db[type][i],...obj};delete form.dataset.editId;form.querySelector("button").textContent="Enregistrer "+schemas[type].title.toLowerCase();notify("Modifications enregistrées.")}else{obj.id=Date.now().toString(36)+Math.random().toString(36).slice(2,7);db[type].push(obj);notify(schemas[type].title+" enregistré.")}form.reset();if(type==="depenses"||type==="recettes")form.elements.date.value=today();if(type==="chantiers")form.elements.statut.value="En cours";if(type==="ouvriers"){form.elements.jours.value="0";form.elements.salaire.value="0";form.elements.transport.value="0"}if(type==="materiaux")form.elements.prix.value="0";if(type==="metre"){form.elements.longueur.value="0";form.elements.largeur.value="0";form.elements.hauteur.value="0";form.elements.quantite.value="1"}if(type==="factures"){form.elements.ht.value="0";form.elements.tva.value="20";form.elements.paye.value="0"}save();refreshSelects();renderList(type)})}
-window.exportData=function(){const blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Spids_Manager_sauvegarde_"+today()+".json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);notify("Sauvegarde préparée.")};
-window.importData=function(){const file=$("import-file").files[0];if(!file){notify("Choisissez un fichier JSON.");return}const reader=new FileReader();reader.onload=()=>{try{const d=JSON.parse(reader.result);for(const k of ["chantiers","ouvriers","materiaux","fournisseurs","prestataires","planning","photos","depenses","recettes","metre","factures"])if(!Array.isArray(d[k]))throw Error();if(!confirm("Remplacer toutes les données actuelles par cette sauvegarde ?"))return;db={...initial,...d};save();go("dashboard");notify("Sauvegarde restaurée.")}catch(e){notify("Fichier invalide ou incompatible.")}};reader.readAsText(file)};
-window.clearData=function(){if(!confirm("Effacer toutes les données de cet appareil ? Exportez une sauvegarde avant."))return;db=JSON.parse(JSON.stringify(initial));save();refreshSelects();go("dashboard");notify("Données effacées.")};
-refreshSelects();renderDashboard();renderSpaces();
-})();
+<main>
+<section id="dashboard">
+  <div class="row">
+    <h2>Tableau de bord</h2>
+    <button onclick="showNewProject()">+ Nouveau chantier</button>
+  </div>
+  <div class="grid">
+    <div class="metric"><span class="muted">Chantiers</span><strong id="mProjects">0</strong></div>
+    <div class="metric"><span class="muted">Dépenses totales</span><strong id="mExpenses">0 DH</strong></div>
+    <div class="metric"><span class="muted">Encaissements</span><strong id="mIncome">0 DH</strong></div>
+    <div class="metric"><span class="muted">Solde global</span><strong id="mBalance">0 DH</strong></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h3>Mes chantiers</h3>
+    <div id="projectList"></div>
+  </div>
+  <div class="card">
+    <h3>Sauvegarde et restauration</h3>
+    <p class="muted">Exportez régulièrement vos données pour éviter leur perte.</p>
+    <div class="actions">
+      <button onclick="exportData()">Exporter les données</button>
+      <button class="secondary" onclick="document.getElementById('importFile').click()">Importer une sauvegarde</button>
+      <input id="importFile" type="file" accept=".json,application/json" class="hidden" onchange="importData(event)">
+    </div>
+  </div>
+</section>
+
+<section id="editor" class="card hidden">
+  <h2 id="editorTitle">Nouveau chantier</h2>
+  <form id="projectForm">
+    <input type="hidden" id="projectId">
+    <label>Nom du chantier *</label>
+    <input id="pName" required placeholder="Ex. Villa Bouskoura">
+    <label>Client</label>
+    <input id="pClient" placeholder="Nom du client">
+    <label>Adresse / Ville</label>
+    <input id="pAddress" placeholder="Casablanca, Rabat...">
+    <div class="two">
+      <div><label>Date de début</label><input id="pStart" type="date"></div>
+      <div><label>Date de fin prévue</label><input id="pEnd" type="date"></div>
+    </div>
+    <label>Budget prévu (DH)</label>
+    <input id="pBudget" type="number" min="0" step="0.01" value="0">
+    <label>Description / Notes</label>
+    <textarea id="pNotes" rows="3"></textarea>
+    <div class="actions">
+      <button type="submit">Enregistrer</button>
+      <button type="button" class="secondary" onclick="hideEditor()">Annuler</button>
+    </div>
+  </form>
+</section>
+
+<section id="workspace" class="hidden">
+  <div class="card">
+    <button class="secondary" onclick="backHome()">← Tableau de bord</button>
+    <h2 id="currentName"></h2>
+    <div id="currentInfo" class="muted"></div>
+    <div class="grid" style="margin-top:12px">
+      <div class="metric"><span class="muted">Budget</span><strong id="wBudget">0 DH</strong></div>
+      <div class="metric"><span class="muted">Dépenses</span><strong id="wExpenses">0 DH</strong></div>
+      <div class="metric"><span class="muted">Recettes</span><strong id="wIncome">0 DH</strong></div>
+      <div class="metric"><span class="muted">Solde</span><strong id="wBalance">0 DH</strong></div>
+    </div>
+  </div>
+  <nav id="tabs"></nav>
+  <div id="sectionContent"></div>
+</section>
+
+<footer>Spids Manager • Version autonome • Sauvegarde locale du navigateur</footer>
+</main>
+
+<script>
+const KEY = "spids_manager_independent_v1";
+const sections = [
+ ["info","Informations"],["ouvriers","Ouvriers"],["materiaux","Matériaux"],
+ ["fournisseurs","Fournisseurs"],["prestataires","Prestataires"],
+ ["depenses","Dépenses"],["recettes","Encaissements"],
+ ["planning","Planning"],["photos","Photos"],["documents","Documents"]
+];
+const schemas = {
+ ouvriers:{title:"Ouvrier",fields:[
+  ["name","Nom complet","text",true],["role","Fonction / métier","text"],
+  ["phone","Téléphone","tel"],["rate","Tarif journalier (DH)","number"],
+  ["notes","Notes","textarea"]]},
+ materiaux:{title:"Matériau",fields:[
+  ["name","Désignation","text",true],["qty","Quantité","number"],
+  ["unit","Unité","text"],["price","Prix unitaire (DH)","number"],
+  ["supplier","Fournisseur","text"],["date","Date","date"],["notes","Notes","textarea"]]},
+ fournisseurs:{title:"Fournisseur",fields:[
+  ["name","Nom du fournisseur","text",true],["phone","Téléphone","tel"],
+  ["address","Adresse","text"],["specialty","Matériaux / spécialité","text"],
+  ["notes","Notes","textarea"]]},
+ prestataires:{title:"Prestataire",fields:[
+  ["name","Nom / entreprise","text",true],["service","Prestation","text"],
+  ["phone","Téléphone","tel"],["price","Montant convenu (DH)","number"],
+  ["date","Date","date"],["notes","Notes","textarea"]]},
+ depenses:{title:"Dépense",fields:[
+  ["name","Libellé de la dépense","text",true],["amount","Montant (DH)","number",true],
+  ["date","Date","date"],["category","Catégorie","text"],
+  ["supplier","Fournisseur / bénéficiaire","text"],["notes","Référence facture / notes","textarea"]]},
+ recettes:{title:"Encaissement",fields:[
+  ["name","Libellé / référence","text",true],["amount","Montant reçu (DH)","number",true],
+  ["date","Date","date"],["client","Payé par","text"],
+  ["notes","Notes","textarea"]]},
+ planning:{title:"Tâche du planning",fields:[
+  ["name","Travaux / tâche","text",true],["start","Date de début","date"],
+  ["end","Date de fin","date"],["status","Statut","select",true,["À faire","En cours","Terminé","En retard"]],
+  ["responsible","Responsable","text"],["notes","Notes","textarea"]]},
+ documents:{title:"Document / facture",fields:[
+  ["name","Nom du document","text",true],["type","Type","text"],
+  ["date","Date","date"],["reference","Référence","text"],["notes","Notes","textarea"]]}
+};
+let db = loadDB(), currentId = null, activeTab = "info";
+
+function loadDB(){
+ try{
+  const d=JSON.parse(localStorage.getItem(KEY)||'{"projects":[]}');
+  if(!Array.isArray(d.projects))d.projects=[];
+  d.projects.forEach(p=>{if(!p.data)p.data={};});
+  return d;
+ }catch(e){return {projects:[]};}
+}
+function saveDB(){
+ try{localStorage.setItem(KEY,JSON.stringify(db));}
+ catch(e){alert("Stockage insuffisant. Exportez vos données et réduisez la taille des photos.");}
+}
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function money(n){return (Number(n)||0).toLocaleString("fr-FR",{maximumFractionDigits:2})+" DH";}
+function total(p,key){return (p.data[key]||[]).reduce((s,x)=>s+(Number(x.amount)||0),0);}
+function project(id){return db.projects.find(p=>p.id===id);}
+function show(id){document.getElementById(id).classList.remove("hidden");}
+function hide(id){document.getElementById(id).classList.add("hidden");}
+
+function renderHome(){
+ hide("editor");hide("workspace");show("dashboard");
+ document.getElementById("mProjects").textContent=db.projects.length;
+ document.getElementById("mExpenses").textContent=money(db.projects.reduce((s,p)=>s+total(p,"depenses"),0));
+ document.getElementById("mIncome").textContent=money(db.projects.reduce((s,p)=>s+total(p,"recettes"),0));
+ document.getElementById("mBalance").textContent=money(db.projects.reduce((s,p)=>s+total(p,"recettes")-total(p,"depenses"),0));
+ const list=document.getElementById("projectList");
+ if(!db.projects.length){list.innerHTML='<div class="empty">Aucun chantier. Appuyez sur « Nouveau chantier » pour commencer.</div>';return;}
+ list.innerHTML=db.projects.map(p=>`
+ <div class="item">
+  <div class="row"><strong>${esc(p.name)}</strong><span class="small">${esc(p.address||"")}</span></div>
+  <p class="muted">Client : ${esc(p.client||"—")} · Budget : ${money(p.budget)}</p>
+  <p class="muted">Dépenses : ${money(total(p,"depenses"))} · Recettes : ${money(total(p,"recettes"))}</p>
+  <div class="actions">
+   <button onclick="openProject('${p.id}')">Ouvrir le chantier</button>
+   <button class="secondary" onclick="editProject('${p.id}')">Modifier</button>
+   <button class="danger" onclick="deleteProject('${p.id}')">Supprimer</button>
+  </div>
+ </div>`).join("");
+}
+function showNewProject(){
+ document.getElementById("projectForm").reset();
+ document.getElementById("projectId").value="";
+ document.getElementById("pBudget").value="0";
+ document.getElementById("editorTitle").textContent="Nouveau chantier";
+ hide("dashboard");hide("workspace");show("editor");
+}
+function hideEditor(){renderHome();}
+function editProject(pid){
+ const p=project(pid);if(!p)return;
+ document.getElementById("projectId").value=p.id;
+ document.getElementById("pName").value=p.name||"";
+ document.getElementById("pClient").value=p.client||"";
+ document.getElementById("pAddress").value=p.address||"";
+ document.getElementById("pStart").value=p.start||"";
+ document.getElementById("pEnd").value=p.end||"";
+ document.getElementById("pBudget").value=p.budget||0;
+ document.getElementById("pNotes").value=p.notes||"";
+ document.getElementById("editorTitle").textContent="Modifier le chantier";
+ hide("dashboard");hide("workspace");show("editor");
+}
+document.getElementById("projectForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const pid=document.getElementById("projectId").value;
+ const data={name:document.getElementById("pName").value.trim(),
+ client:document.getElementById("pClient").value.trim(),
+ address:document.getElementById("pAddress").value.trim(),
+ start:document.getElementById("pStart").value,
+ end:document.getElementById("pEnd").value,
+ budget:Number(document.getElementById("pBudget").value)||0,
+ notes:document.getElementById("pNotes").value};
+ if(pid){Object.assign(project(pid),data);}
+ else{db.projects.push({id:id(),...data,data:{}});}
+ saveDB();renderHome();
+});
+function deleteProject(pid){
+ if(!confirm("Supprimer ce chantier et toutes ses données ? Cette action est irréversible."))return;
+ db.projects=db.projects.filter(p=>p.id!==pid);saveDB();renderHome();
+}
+function backHome(){currentId=null;renderHome();}
+function openProject(pid){currentId=pid;activeTab="info";renderWorkspace();}
+function renderWorkspace(){
+ const p=project(currentId);if(!p){renderHome();return;}
+ hide("dashboard");hide("editor");show("workspace");
+ document.getElementById("currentName").textContent="🏗️ "+p.name;
+ document.getElementById("currentInfo").textContent=[p.client,p.address,p.start&&("Début : "+p.start),p.end&&("Fin prévue : "+p.end)].filter(Boolean).join(" • ");
+ document.getElementById("wBudget").textContent=money(p.budget);
+ document.getElementById("wExpenses").textContent=money(total(p,"depenses"));
+ document.getElementById("wIncome").textContent=money(total(p,"recettes"));
+ document.getElementById("wBalance").textContent=money(total(p,"recettes")-total(p,"depenses"));
+ document.getElementById("tabs").innerHTML=sections.map(([key,label])=>
+ `<button class="${key===activeTab?'active':''}" onclick="switchTab('${key}')">${label}</button>`).join("");
+ renderSection();
+}
+function switchTab(tab){activeTab=tab;renderWorkspace();}
+function renderSection(){
+ const p=project(currentId);if(!p)return;
+ const el=document.getElementById("sectionContent");
+ if(activeTab==="info"){
+  el.innerHTML=`<div class="card"><h3>Informations du chantier</h3>
+  <p><b>Nom :</b> ${esc(p.name)}</p><p><b>Client :</b> ${esc(p.client||"—")}</p>
+  <p><b>Adresse :</b> ${esc(p.address||"—")}</p><p><b>Début :</b> ${esc(p.start||"—")} · <b>Fin prévue :</b> ${esc(p.end||"—")}</p>
+  <p><b>Budget :</b> ${money(p.budget)}</p><p>${esc(p.notes||"Aucune note")}</p>
+  <button onclick="editProject('${p.id}')">Modifier les informations</button></div>
+  <div class="card"><h3>Résumé financier</h3><p>Dépenses : ${money(total(p,"depenses"))}</p>
+  <p>Encaissements : ${money(total(p,"recettes"))}</p>
+  <p><b>Solde : ${money(total(p,"recettes")-total(p,"depenses"))}</b></p></div>`;
+  return;
+ }
+ if(activeTab==="photos"){renderPhotos(p,el);return;}
+ const schema=schemas[activeTab];if(!schema)return;
+ const entries=p.data[activeTab]||[];
+ el.innerHTML=`<div class="card"><h3>Ajouter : ${schema.title}</h3>
+ <form id="entryForm"><input type="hidden" id="entryId">
+ <div class="grid">${schema.fields.map(f=>`
+ <div><label>${esc(f[1])}${f[3]?' *':''}</label>
+ ${f[2]==="textarea"?`<textarea id="f_${f[0]}" rows="2" ${f[3]?'required':''}></textarea>`:
+ f[2]==="select"?`<select id="f_${f[0]}" ${f[3]?'required':''}>${f[4].map(o=>`<option>${esc(o)}</option>`).join("")}</select>`:
+ `<input id="f_${f[0]}" type="${f[2]}" ${f[3]?'required':''} ${f[2]==="number"?'step="0.01"':''}>`}
+ </div>`).join("")}</div>
+ <div class="actions"><button type="submit">Enregistrer</button><button type="button" class="secondary" onclick="resetEntry()">Vider</button></div>
+ </form></div><div class="card"><h3>Liste — ${entries.length}</h3>
+ ${entries.length?entries.map(x=>`<div class="item">
+ <strong>${esc(x.name||"Sans nom")}</strong>
+ <div>${schema.fields.filter(f=>f[0]!=="name").map(f=>x[f[0]]!==undefined&&x[f[0]]!==""?
+ `<p class="muted"><b>${esc(f[1])} :</b> ${esc(x[f[0]])}${f[0]==="amount"||f[0]==="price"||f[0]==="rate"?" DH":""}</p>`:"").join("")}</div>
+ <div class="actions"><button class="secondary" onclick="editEntry('${x.id}')">Modifier</button><button class="danger" onclick="deleteEntry('${x.id}')">Supprimer</button></div>
+ </div>`).join(""):'<div class="empty">Aucune donnée pour ce chantier.</div>'}</div>`;
+ document.getElementById("entryForm").addEventListener("submit",saveEntry);
+}
+function resetEntry(){
+ const form=document.getElementById("entryForm");if(form)form.reset();
+ const idEl=document.getElementById("entryId");if(idEl)idEl.value="";
+}
+function saveEntry(e){
+ e.preventDefault();const p=project(currentId),s=schemas[activeTab];if(!p)return;
+ if(!p.data[activeTab])p.data[activeTab]=[];
+ const eid=document.getElementById("entryId").value;
+ const obj={id:eid||id()};
+ s.fields.forEach(f=>{const el=document.getElementById("f_"+f[0]);obj[f[0]]=el?el.value:"";});
+ const index=p.data[activeTab].findIndex(x=>x.id===eid);
+ if(eid&&index>=0)p.data[activeTab][index]=obj;else p.data[activeTab].push(obj);
+ saveDB();renderWorkspace();
+}
+function editEntry(eid){
+ const p=project(currentId),s=schemas[activeTab];const x=(p.data[activeTab]||[]).find(y=>y.id===eid);if(!x)return;
+ document.getElementById("entryId").value=x.id;
+ s.fields.forEach(f=>{const el=document.getElementById("f_"+f[0]);if(el)el.value=x[f[0]]??"";});
+ document.getElementById("entryForm").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function deleteEntry(eid){
+ if(!confirm("Supprimer cet élément ?"))return;
+ const p=project(currentId);p.data[activeTab]=(p.data[activeTab]||[]).filter(x=>x.id!==eid);
+ saveDB();renderWorkspace();
+}
+function renderPhotos(p,el){
+ if(!p.data.photos)p.data.photos=[];
+ el.innerHTML=`<div class="card"><h3>Photos du chantier</h3>
+ <div class="notice">Choisissez des photos depuis votre iPhone. Pour éviter de saturer le stockage, ajoutez quelques photos à la fois.</div>
+ <label>Description de la photo</label><input id="photoCaption" placeholder="Ex. Ferraillage dalle RDC">
+ <label>Choisir une ou plusieurs photos</label><input id="photoFiles" type="file" accept="image/*" multiple>
+ <div class="actions"><button onclick="addPhotos()">Ajouter les photos</button></div></div>
+ <div class="card"><h3>Galerie (${p.data.photos.length})</h3>
+ ${p.data.photos.length?p.data.photos.map(x=>`<div class="item"><strong>${esc(x.caption||"Photo chantier")}</strong>
+ <img class="photo" src="${x.src}" alt="${esc(x.caption)}"><p class="small">${esc(x.date||"")}</p>
+ <button class="danger" onclick="deletePhoto('${x.id}')">Supprimer</button></div>`).join(""):'<div class="empty">Aucune photo enregistrée.</div>'}</div>`;
+}
+async function addPhotos(){
+ const p=project(currentId),input=document.getElementById("photoFiles");
+ const files=Array.from(input.files||[]);
+ if(!files.length){alert("Choisissez d'abord une photo.");return;}
+ const caption=document.getElementById("photoCaption").value.trim();
+ for(const file of files){
+  if(!file.type.startsWith("image/"))continue;
+  try{
+   const src=await compressImage(file);
+   p.data.photos.push({id:id(),caption:caption||file.name,src,date:new Date().toLocaleDateString("fr-FR")});
+  }catch(e){alert("Impossible de charger une photo.");}
+ }
+ saveDB();renderWorkspace();
+}
+function compressImage(file){
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onerror=reject;
+  reader.onload=()=>{
+   const img=new Image();img.onerror=reject;
+   img.onload=()=>{
+    const max=1000,scale=Math.min(1,max/Math.max(img.width,img.height));
+    const canvas=document.createElement("canvas");
+    canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);
+    canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);
+    resolve(canvas.toDataURL("image/jpeg",0.72));
+   };
+   img.src=reader.result;
+  };
+  reader.readAsDataURL(file);
+ });
+}
+function deletePhoto(pid){
+ if(!confirm("Supprimer cette photo ?"))return;
+ const p=project(currentId);p.data.photos=p.data.photos.filter(x=>x.id!==pid);
+ saveDB();renderWorkspace();
+}
+function exportData(){
+ const blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="Spids_Manager_sauvegarde.json";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function importData(e){
+ const file=e.target.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const incoming=JSON.parse(reader.result);
+   if(!incoming||!Array.isArray(incoming.projects))throw new Error("Format invalide");
+   if(!confirm("Importer cette sauvegarde remplacera les données actuelles. Continuer ?"))return;
+   db=incoming;db.projects.forEach(p=>{if(!p.data)p.data={};});
+   saveDB();renderHome();alert("Sauvegarde importée.");
+  }catch(err){alert("Fichier de sauvegarde invalide.");}
+  e.target.value="";
+ };
+ reader.readAsText(file);
+}
+renderHome();
 </script>
 </body>
 </html>
